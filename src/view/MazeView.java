@@ -27,14 +27,14 @@ public class MazeView extends Pane {
     public PlayerView player;
 
 
-    public MazeView() {
+    public MazeView(String filename, int characterNum) {
         mazePane = new Pane();
         this.getChildren().add(mazePane);
 
-        mazeModel = new MazeModel();
+        mazeModel = new MazeModel(filename);
         setVisible(true);
 
-        player = new PlayerView();
+        player = new PlayerView(characterNum);
         player.setVisible(true);
 
         setupMaze(mazePane, mazeModel.getMap());

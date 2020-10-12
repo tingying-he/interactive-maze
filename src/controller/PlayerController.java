@@ -19,17 +19,12 @@ public class PlayerController {
 
     public PlayerController(MazeView mazeView) {
         this.myMazeView = mazeView;
-        System.out.println("wwwww");
+//        System.out.println("wwwww");
 
     }
 
     public void addKeyListener() {
-//        myMazeView.setOnKeyPressed(event -> {
-//            System.out.println("aaaaaaaa");
-//            keyEventHandler(event);
-//        });
 
-//        myMazeView.addEventHandler(KeyEvent.ANY, keyEventHandler);
 
         myMazeView.setOnKeyPressed(new EventHandler<KeyEvent>() {
 

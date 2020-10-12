@@ -1,9 +1,11 @@
 package application;
 
 import controller.PlayerController;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import model.MazeModel;
+import view.ChooseCharacterView;
 import view.MazeView;
 
 /**
@@ -17,26 +19,29 @@ public class App extends BorderPane {
 
 	public MazeView myMazeView;
 
+	public int characterNum;
+
+
 
 
 
 	/** Construct the application */
-	public App() {
+	public App(String filename,int characterNum) {
 		//	TODO: Controller
 
 		// Initialize the GUI
-		initUI();
+		initUI(filename, characterNum);
 
 		// Resize window and make it visible
 		setVisible(true);
 	}
 
 
-	private void initUI() {
+	public void initUI(String filename,int characterNum) {
 		topPane = new Pane();
 		centerPane = new Pane();
 
-		myMazeView = new MazeView();
+		myMazeView = new MazeView(filename, characterNum);
 		PlayerController myPlayerController = new PlayerController(myMazeView);
 		myPlayerController.addKeyListener();
 
@@ -44,5 +49,12 @@ public class App extends BorderPane {
 
 		this.setTop(topPane);
 		this.setCenter(centerPane);
+
+
+
+
+
+
+
 	}
 }

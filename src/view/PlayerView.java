@@ -2,6 +2,8 @@ package view;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -9,7 +11,6 @@ import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
 
-import java.awt.*;
 
 /**
  * @Auther: Anqi Yang
@@ -18,13 +19,18 @@ import java.awt.*;
  */
 public class PlayerView extends StackPane {
     int x, y;
+//    public int characterNum;
 
-    private Rectangle player = new Rectangle(MazeModel.panelSize, MazeModel.panelSize);
+//    ChooseCharacterView chooseCharacterView = new ChooseCharacterView();
+    private ImageView player;
 
 
-    public PlayerView() {
-//        player.setFill(Color.hsb(0.3f,0.3f, 1.0));
-        player.setFill(Color.RED);
+    public PlayerView(int characterNum) {
+        player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterNum);
+        this.getChildren().addAll(player);
+    }
+    public void init(int characterNum){
+        player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterNum);
         this.getChildren().addAll(player);
     }
 
@@ -55,4 +61,15 @@ public class PlayerView extends StackPane {
             y++;
         }
     }
+
+    public ImageView putCharacter(int w, int h, int characterNum ){
+        Image img = new Image("/img/character"+characterNum+".png");
+        ImageView imgView = new ImageView(img);
+        imgView.setFitWidth(w);
+        imgView.setFitHeight(h);
+
+        return imgView;
+    }
+
+
 }

@@ -25,10 +25,12 @@ public class MazeModel extends Pane{
     public static int panelSize = 25;
 
     public static int map[][] = new int[columns][rows];
+    public String filename;
 
+    public MazeModel(String filename) {
+        this.filename = filename;
 
-    public MazeModel() {
-        loadMaze("Level 0");
+        loadMaze(filename);
     }
 
     public void loadMaze(String filename) {
