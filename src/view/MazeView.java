@@ -2,6 +2,8 @@ package view;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -66,16 +68,29 @@ public class MazeView extends Pane {
     }
 
     private class Cell extends StackPane {
-        private Rectangle cellContent = new Rectangle(panelSize, panelSize);
+//        private Rectangle cellContent = new Rectangle(panelSize, panelSize);
+        private Pane cellContent = new Pane();
 
         public Cell(int x, int y, int type) {
             if(type == 0) {
-                cellContent.setFill(Color.GRAY);
+                Image wallImg = new Image("img/wall.png");
+                ImageView wallImgView = new ImageView(wallImg);
+                wallImgView.setFitWidth(panelSize);
+                wallImgView.setFitHeight(panelSize);
+                cellContent.getChildren().add(wallImgView);
+//                mazePane.getChildren().add(wallImgView);
             } else if (type == 1) {
-                cellContent.setFill(Color.WHITE);
+//                cellContent.setFill(Color.WHITE);
                 if(x == columns-1){
                     endLevelLoc = y;
                 }
+            } else if (type == 2){
+//                cellContent.setFill(Color.GREEN);
+                Image bushImg = new Image("img/bush.png");
+                ImageView bushImgView = new ImageView(bushImg);
+                bushImgView.setFitWidth(panelSize);
+                bushImgView.setFitHeight(panelSize);
+                cellContent.getChildren().add(bushImgView);
             }
             getChildren().addAll(cellContent);
             this.setTranslateX(x * panelSize);
