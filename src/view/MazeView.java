@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -70,8 +72,19 @@ public class MazeView extends Pane {
     private class Cell extends StackPane {
 //        private Rectangle cellContent = new Rectangle(panelSize, panelSize);
         private Pane cellContent = new Pane();
+        int type;
+        int x;
+        int y;
 
         public Cell(int x, int y, int type) {
+            this.type =type;
+            this.x = x;
+            this.y = y;
+            init(x,y,type);
+        }
+
+        public void init(int x,int y,int type){
+
             if(type == 0) {
                 Image wallImg = new Image("img/wall.png");
                 ImageView wallImgView = new ImageView(wallImg);
@@ -80,17 +93,31 @@ public class MazeView extends Pane {
                 cellContent.getChildren().add(wallImgView);
 //                mazePane.getChildren().add(wallImgView);
             } else if (type == 1) {
-//                cellContent.setFill(Color.WHITE);
+                Image whiteImg = new Image("img/white.png");
+                ImageView whiteImgView = new ImageView(whiteImg);
+                whiteImgView.setFitWidth(panelSize);
+                whiteImgView.setFitHeight(panelSize);
+                cellContent.getChildren().add(whiteImgView);
                 if(x == columns-1){
                     endLevelLoc = y;
                 }
-            } else if (type == 2){
-//                cellContent.setFill(Color.GREEN);
+            } else if (type == 2){ //bush
                 Image bushImg = new Image("img/bush.png");
                 ImageView bushImgView = new ImageView(bushImg);
                 bushImgView.setFitWidth(panelSize);
                 bushImgView.setFitHeight(panelSize);
                 cellContent.getChildren().add(bushImgView);
+
+                cellContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                            if(mouseEvent.getClickCount() == 10){
+                                System.out.println("10 clicked");
+                            }
+                        }
+                    }
+                });
             }
             getChildren().addAll(cellContent);
             this.setTranslateX(x * panelSize);
