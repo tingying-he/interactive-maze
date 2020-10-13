@@ -30,6 +30,8 @@ public class MazeView extends Pane {
 
     public PlayerView player;
 
+//    public Cell[][] cells = new Cell[rows][columns];
+
 
     public MazeView(String filename, int characterNum) {
         mazePane = new Pane();
@@ -44,6 +46,7 @@ public class MazeView extends Pane {
         setupMaze(mazePane, mazeModel.getMap());
 
         this.setFocusTraversable(true);
+
     }
 
     private void setupMaze(Pane mazePane, int[][] map) {
@@ -53,6 +56,7 @@ public class MazeView extends Pane {
 //                System.out.print(y);
 //                System.out.println(map[x][y]);
                 Cell cell = new Cell(x, y, map[x][y]);
+//                cells[x][y] = cell;
                 mazePane.getChildren().addAll(cell);
 
                 // Starting point of the player
@@ -66,8 +70,10 @@ public class MazeView extends Pane {
 
             }
         }
+
         player.toFront();
     }
+
 
     private class Cell extends StackPane {
 //        private Rectangle cellContent = new Rectangle(panelSize, panelSize);
@@ -75,15 +81,18 @@ public class MazeView extends Pane {
         int type;
         int x;
         int y;
+//        int flag = 0;
 
         public Cell(int x, int y, int type) {
             this.type =type;
             this.x = x;
             this.y = y;
-            init(x,y,type);
+            init(type);
+
         }
 
-        public void init(int x,int y,int type){
+
+        public void init(int type){
 
             if(type == 0) {
                 Image wallImg = new Image("img/wall.png");
@@ -92,6 +101,7 @@ public class MazeView extends Pane {
                 wallImgView.setFitHeight(panelSize);
                 cellContent.getChildren().add(wallImgView);
 //                mazePane.getChildren().add(wallImgView);
+                getChildren().addAll(cellContent);
             } else if (type == 1) {
                 Image whiteImg = new Image("img/white.png");
                 ImageView whiteImgView = new ImageView(whiteImg);
@@ -101,27 +111,39 @@ public class MazeView extends Pane {
                 if(x == columns-1){
                     endLevelLoc = y;
                 }
-            } else if (type == 2){ //bush
+                getChildren().addAll(cellContent);
+            } else if (type == 2){ //
                 Image bushImg = new Image("img/bush.png");
                 ImageView bushImgView = new ImageView(bushImg);
                 bushImgView.setFitWidth(panelSize);
                 bushImgView.setFitHeight(panelSize);
                 cellContent.getChildren().add(bushImgView);
-
+                getChildren().addAll(cellContent);
                 cellContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
                             if(mouseEvent.getClickCount() == 10){
                                 System.out.println("10 clicked");
+                                getChildren().remove(cellContent);
+                                init(1);
                             }
                         }
                     }
                 });
             }
-            getChildren().addAll(cellContent);
+
+
+
+//            getChildren().addAll(cellContent);
             this.setTranslateX(x * panelSize);
             this.setTranslateY(y * panelSize);
+
+
+
+
         }
+
+
     }
 }
