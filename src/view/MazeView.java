@@ -103,12 +103,13 @@ public class MazeView extends Pane {
             }
         }
 
-        badGuysController0.setBadGuyMoveTimer();
+        badGuysController0.setBadGuyMoveTimer(player.x,player.y);
         badGuysController0.badGuyPane.toFront();
 
-        badGuysController1.setBadGuyMoveTimer();
+        badGuysController1.setBadGuyMoveTimer(player.x,player.y);
         badGuysController1.badGuyPane.toFront();
         player.toFront();
+
     }
 
 
@@ -169,7 +170,7 @@ public class MazeView extends Pane {
                                 map[x][y] =1;
                                 mazeModel.setMap(map);
                                 mazePane.getChildren().remove(cells[x][y]);
-                                init(1);
+//                                init(1);
                                 cells[x][y] = new MazeView.Cell(x,y,1);
                                 mazePane.getChildren().add(cells[x][y]);
                             }
@@ -186,9 +187,10 @@ public class MazeView extends Pane {
 
 
 
-
         }
 
 
     }
+
+
 }
