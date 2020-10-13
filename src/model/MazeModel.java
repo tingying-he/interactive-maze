@@ -70,4 +70,5 @@ public class MazeModel extends Pane{
     public int[][] getMap() {
         return this.map;
     }
+    public void setMap(int[][] map){this.map = map;}
 }

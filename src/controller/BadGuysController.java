@@ -24,16 +24,13 @@ public class BadGuysController {
     Timer timer;
     public int x, y;
     private ImageView badGuy;
-    public BadGuysController() {
-        Image img = new Image("/img/badguy.png");
+    public BadGuysController(int badguyNum) {
+        Image img = new Image("/img/badguy"+badguyNum+".png");
         badGuy = new ImageView(img);
         badGuy.setFitWidth(MazeModel.panelSize);
         badGuy.setFitHeight(MazeModel.panelSize);
 
         badGuyPane.getChildren().addAll(badGuy);
-    }
-    public void init(int characterNum){
-
     }
 
     public void randomMove(){
@@ -103,7 +100,7 @@ public class BadGuysController {
 
 
                 }
-            }, 0, 1500);
+            }, 0, 500);
         }catch (Exception e) {
             e.printStackTrace();
         }
