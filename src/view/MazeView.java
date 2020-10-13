@@ -1,5 +1,6 @@
 package view;
 
+import controller.BadGuysController;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -29,8 +30,9 @@ public class MazeView extends Pane {
     public Pane mazePane;
 
     public PlayerView player;
+    public BadGuysController badGuysController;
 
-//    public Cell[][] cells = new Cell[rows][columns];
+    public Cell[][] cells = new Cell[rows][columns];
 
 
     public MazeView(String filename, int characterNum) {
@@ -42,6 +44,9 @@ public class MazeView extends Pane {
 
         player = new PlayerView(characterNum);
         player.setVisible(true);
+
+        badGuysController = new BadGuysController();
+        badGuysController.badGuyPane.setVisible(true);
 
         setupMaze(mazePane, mazeModel.getMap());
 
@@ -56,7 +61,6 @@ public class MazeView extends Pane {
 //                System.out.print(y);
 //                System.out.println(map[x][y]);
                 Cell cell = new Cell(x, y, map[x][y]);
-//                cells[x][y] = cell;
                 mazePane.getChildren().addAll(cell);
 
                 // Starting point of the player
@@ -68,9 +72,21 @@ public class MazeView extends Pane {
                     mazePane.getChildren().addAll(player);
                 }
 
+                if(x == 0 && map[x][y] == 1){
+                    badGuysController.badGuyPane.setTranslateX(x * panelSize);
+                    badGuysController.badGuyPane.setTranslateY(y * panelSize);
+                    badGuysController.y = y;
+                    badGuysController.x = x;
+//                    mazePane.getChildren().remove(cells[x][y].cellContent);
+                    mazePane.getChildren().addAll(badGuysController.badGuyPane);
+                }
+
+
             }
         }
 
+        badGuysController.setBadGuyMoveTimer();
+        badGuysController.badGuyPane.toFront();
         player.toFront();
     }
 
