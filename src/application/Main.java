@@ -4,6 +4,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -122,29 +125,34 @@ public class Main extends Application {
             }
         });
 
-        //check collision
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+//        check collision
+        Timer timerCollision = new Timer();
+        timerCollision.schedule(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-//
+                        if( app.myMazeView.player.x ==  app.myMazeView.badGuysController0.x
+                                &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController0.y){
+                            System.out.println("Catch by bad guy!");
+                            timerCollision.cancel();
+                            lose();
+                        }
+                        if( app.myMazeView.player.x ==  app.myMazeView.badGuysController1.x
+                                &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController1.y){
+                            System.out.println("Catch by bad guy!");
+                            timerCollision.cancel();
+                            lose();
+                        }
+
                     }
                 });
-                     if( app.myMazeView.player.x ==  app.myMazeView.badGuysController0.x
-                             &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController0.y){
-                    System.out.println("Catch by bad guy!");
-                }
-                if( app.myMazeView.player.x ==  app.myMazeView.badGuysController1.x
-                        &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController1.y){
-                    System.out.println("Catch by bad guy!");
-                }
 
 
             }
-        }, 0, 100);
+        }, 0, 10);
+
 
 
 
@@ -166,4 +174,13 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void lose(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("GAME OVER");
+        alert.setHeaderText("GAME OVER");
+        alert.setContentText("GAME OVER");
+        alert.show();
+    }
 }
+
