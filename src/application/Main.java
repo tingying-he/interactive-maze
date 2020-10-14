@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 import model.MazeModel;
 import view.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @Auther: Anqi Yang
  * @Date: 2020/10/03/15:50
@@ -117,6 +122,33 @@ public class Main extends Application {
             }
         });
 
+        //check collision
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+//
+                    }
+                });
+                     if( app.myMazeView.player.x ==  app.myMazeView.badGuysController0.x
+                             &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController0.y){
+                    System.out.println("Catch by bad guy!");
+                }
+                if( app.myMazeView.player.x ==  app.myMazeView.badGuysController1.x
+                        &&  app.myMazeView.player.y ==  app.myMazeView.badGuysController1.y){
+                    System.out.println("Catch by bad guy!");
+                }
+
+
+            }
+        }, 0, 100);
+
+
+
+
 
         primaryStage.setTitle("Model - View - Controller");
 
@@ -126,6 +158,8 @@ public class Main extends Application {
             Platform.exit();
             System.exit(0);
         });
+
+
     }
 
 

@@ -82,7 +82,7 @@ public class BadGuysController {
         }
     }
 
-    public void setBadGuyMoveTimer(int playerX, int playerY) {
+    public void setBadGuyMoveTimer() {
         try {
             timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -91,13 +91,13 @@ public class BadGuysController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-//                            remainTimeLabel.setText(gameModel.remainTime + "s");
+//
                         }
                     });
 //                    gameModel.spentTime++;
 //                    gameModel.remainTime--;
                     randomMove();
-                    checkCollision(playerX,playerY,x,y);
+//                    checkCollision(playerX,playerY,x,y);
 
 
                 }
@@ -106,6 +106,7 @@ public class BadGuysController {
             e.printStackTrace();
         }
     }
+
 
     public void checkCollision(int playerX, int playerY, int x, int y){
 

@@ -16,6 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.Properties;
+
 /**
  * @Auther: Anqi Yang
  * @Date: 2020/10/03/20:39
@@ -103,15 +108,16 @@ public class MazeView extends Pane {
             }
         }
 
-        badGuysController0.setBadGuyMoveTimer(player.x,player.y);
+        badGuysController0.setBadGuyMoveTimer();
         badGuysController0.badGuyPane.toFront();
 
-        badGuysController1.setBadGuyMoveTimer(player.x,player.y);
+        badGuysController1.setBadGuyMoveTimer();
         badGuysController1.badGuyPane.toFront();
         player.toFront();
 
-    }
 
+
+    }
 
 
     private class Cell extends StackPane {

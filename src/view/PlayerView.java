@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
+import java.beans.PropertyChangeSupport;
 
 
 /**
@@ -18,7 +19,12 @@ import model.MazeModel;
  * @Description:
  */
 public class PlayerView extends StackPane {
-    int x, y;
+    public int x, y;
+    public PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    public void setPlayerX(int playerX){
+        this.x =playerX;
+        pcs.firePropertyChange("playerX", x,this.x);
+    }
 //    public int characterNum;
 
 //    ChooseCharacterView chooseCharacterView = new ChooseCharacterView();
