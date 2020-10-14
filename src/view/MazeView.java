@@ -1,5 +1,12 @@
 package view;
 
+<<<<<<< Updated upstream
+=======
+import controller.BadGuyController;
+import controller.BadGuysController;
+import controller.MazeController;
+import javafx.application.Platform;
+>>>>>>> Stashed changes
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -14,6 +21,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @Auther: Anqi Yang
  * @Date: 2020/10/03/20:39
@@ -25,33 +35,38 @@ public class MazeView extends Pane {
     public static int panelSize = 25;
     public static int endLevelLoc;
 
-    public MazeModel mazeModel;
-    public Pane mazePane;
+    public MazeController mazeController;
 
     public PlayerView player;
+<<<<<<< Updated upstream
 
 //    public Cell[][] cells = new Cell[rows][columns];
+=======
+    public BadGuyController badGuysController0;
+    public BadGuyController badGuysController1;
+
+    public Cell[][] cells = new Cell[rows][columns];
+    Timer timer;
+>>>>>>> Stashed changes
 
 
-    public MazeView(String filename, int characterNum) {
-        mazePane = new Pane();
-        this.getChildren().add(mazePane);
+    public MazeView(MazeController mazeController, String filename, int characterNum) {
+        this.mazeController = mazeController;
 
-        mazeModel = new MazeModel(filename);
-        setVisible(true);
-
-        player = new PlayerView(characterNum);
-        player.setVisible(true);
-
+<<<<<<< Updated upstream
         setupMaze(mazePane, mazeModel.getMap());
+=======
+        setupMaze(mazeController.mazeModel.getMap());
+>>>>>>> Stashed changes
 
         this.setFocusTraversable(true);
 
     }
 
-    private void setupMaze(Pane mazePane, int[][] map) {
+    private void setupMaze(int[][] map) {
         for(int y = 0; y < columns; y++){
             for(int x = 0; x < rows; x++){
+<<<<<<< Updated upstream
 //                System.out.print(x);
 //                System.out.print(y);
 //                System.out.println(map[x][y]);
@@ -67,14 +82,91 @@ public class MazeView extends Pane {
                     player.x = x;
                     mazePane.getChildren().addAll(player);
                 }
+=======
+
+                cells[x][y]=new Cell(x, y, map[x][y]);
+                this.getChildren().add(cells[x][y]);
+
+                // Starting point of the player
+//                if(x == 0 && map[x][y] == 1) {
+//                    player.setTranslateX(x * panelSize);
+//                    player.setTranslateY(y * panelSize);
+//                    player.y = y;
+//                    player.x = x;
+//                    this.getChildren().addAll(player);
+//                }
+//
+//                if(x == 2 && y == 2){
+//                    badGuysController0.badGuyPane.setTranslateX(x * panelSize);
+//                    badGuysController0.badGuyPane.setTranslateY(y * panelSize);
+//                    badGuysController0.y = y;
+//                    badGuysController0.x = x;
+////                    mazePane.getChildren().remove(cells[x][y].cellContent);
+//                    this.getChildren().addAll(badGuysController0.badGuyPane);
+//                }
+//
+//                if(x == 15 && y == 15){
+//                    badGuysController1.badGuyPane.setTranslateX(x * panelSize);
+//                    badGuysController1.badGuyPane.setTranslateY(y * panelSize);
+//                    badGuysController1.y = y;
+//                    badGuysController1.x = x;
+////                    mazePane.getChildren().remove(cells[x][y].cellContent);
+//                    this.getChildren().addAll(badGuysController1.badGuyPane);
+//                }
+>>>>>>> Stashed changes
 
             }
         }
 
+<<<<<<< Updated upstream
         player.toFront();
+=======
+//        setBadGuyMoveTimer();
+//        badGuysController0.badGuyPane.toFront();
+//
+////        setBadGuyMoveTimer();
+//        badGuysController1.badGuyPane.toFront();
+//        player.toFront();
+
+>>>>>>> Stashed changes
     }
+//    public void setBadGuyMoveTimer() {
+//        try {
+//            timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            badGuysController0.randomMove();
+//                            badGuysController1.randomMove();
+//                        }
+//                    });
+////                    gameModel.spentTime++;
+////                    gameModel.remainTime--;
+//
+//
+//
+//                }
+//            }, 0, 500);
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public void checkCollision(int playerX, int playerY, int x, int y){
+//
+//        if (
+//                playerX == x && playerY == y
+//        ) {
+//            System.out.println("catch by bad guy!");
+//        }
+//
+//    }
 
 
+<<<<<<< Updated upstream
     private class Cell extends StackPane {
 //        private Rectangle cellContent = new Rectangle(panelSize, panelSize);
         private Pane cellContent = new Pane();
@@ -143,6 +235,9 @@ public class MazeView extends Pane {
 
 
         }
+=======
+
+>>>>>>> Stashed changes
 
 
     }

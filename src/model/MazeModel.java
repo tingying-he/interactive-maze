@@ -1,5 +1,6 @@
 package model;
 
+import controller.MazeController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -27,7 +28,7 @@ public class MazeModel extends Pane{
     public static int map[][] = new int[columns][rows];
     public String filename;
 
-    public MazeModel(String filename) {
+    public MazeModel(MazeController mazeController, String filename) {
         this.filename = filename;
 
         loadMaze(filename);
