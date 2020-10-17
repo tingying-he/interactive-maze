@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Cell;
 import javafx.scene.input.KeyCode;
@@ -9,6 +10,7 @@ import model.MazeModel;
 import view.MazeView;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Tingying He on 2020/10/14.
@@ -73,8 +75,7 @@ public class MazeController {
                 }
             }
         mazeView.getChildren().addAll( mazeModel.badGuyController0.badGuyView,mazeModel.badGuyController1.badGuyView);
-        mazeModel.badGuyController0.setBadGuyMoveTimer();
-        mazeModel.badGuyController1.setBadGuyMoveTimer();
+        setBadGuyMoveTimer();
     }
 
     public void setPlayer(){
@@ -99,18 +100,22 @@ public class MazeController {
                 switch (event.getCode().toString()) {
                     case "UP":
                         mazeModel.playerController.playerView.moveUp();
+                        checkCollision();
                         System.out.println("UP");
                         break;
                     case "DOWN":
                         mazeModel.playerController.playerView.moveDown();
+                        checkCollision();
                         System.out.println("down");
                         break;
                     case "LEFT":
                         mazeModel.playerController.playerView.moveLeft();
+                        checkCollision();
                         System.out.println("left");
                         break;
                     case "RIGHT":
                         mazeModel.playerController.playerView.moveRight();
+                        checkCollision();
                         System.out.println("right");
                         break;
                 }
@@ -120,6 +125,39 @@ public class MazeController {
                 }
             }
         });
+    }
+    public void setBadGuyMoveTimer() {
+        try {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            mazeModel.badGuyController0.randomMove();
+                            mazeModel.badGuyController1.randomMove();
+                            checkCollision();
+                        }
+                    });
+
+
+                }
+            }, 0, 500);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkCollision(){
+        if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
+                &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
+            System.out.println("Catch by bad guy!");
+        }
+        if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
+                &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
+            System.out.println("Catch by bad guy!");
+        }
     }
 
 }

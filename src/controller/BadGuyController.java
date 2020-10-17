@@ -39,21 +39,16 @@ public class BadGuyController {
     public void randomMove(){
         if(Math.random()<0.25){
             moveDown();
-//            System.out.println("bad guy move down");
         }
         else if(Math.random()<0.5){
             moveLeft();
-//            System.out.println("bad guy move left");
         }
         else if(Math.random()<0.75){
             moveRight();
-//            System.out.println("bad guy move right");
         }
         else if(Math.random()<1){
             moveUp();
-//            System.out.println("bad guy move up");
         }
-//        moveRight();
 
     }
 
@@ -85,30 +80,7 @@ public class BadGuyController {
         }
     }
 
-    public void setBadGuyMoveTimer() {
-        try {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            randomMove();
-                        }
-                    });
-//                    gameModel.spentTime++;
-//                    gameModel.remainTime--;
 
-//                    checkCollision(playerX,playerY,x,y);
-
-
-                }
-            }, 0, 500);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void checkCollision(int playerX, int playerY, int x, int y){
