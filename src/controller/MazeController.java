@@ -90,6 +90,7 @@ public class MazeController {
                     mazeModel.playerController.playerView.y = j;
                 }
             }
+        mazeModel.playerController.playerView.toFront();
         mazeView.getChildren().addAll( mazeModel.playerController.playerView);
     }
 
@@ -132,6 +133,8 @@ public class MazeController {
     public void addMouseEventListener(){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
+                int a = i;
+                int b = j;
                 if (mazeModel.getMap()[i][j] == 2) {
                     mazeModel.cellControllers[i][j].cellView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
@@ -139,6 +142,11 @@ public class MazeController {
                             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent.getClickCount() == 5) {
                                     System.out.println("5 clicked");
+
+                                    int[][] map = mazeModel.getMap();
+                                    map[a][b] = 1;
+                                    mazeModel.setMap(map);
+                                    mazeModel.cellControllers[a][b].cellView.init(mazeModel.getMap()[a][b]);
                                 }
                             }
                         }

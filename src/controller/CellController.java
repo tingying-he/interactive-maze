@@ -27,6 +27,10 @@ public class CellController {
         cellModel = new CellModel(this);
     }
 
+    public void init(){
+
+    }
+
 
 
     public void setType(int type){
