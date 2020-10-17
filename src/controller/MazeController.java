@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Cell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import model.MazeModel;
 import view.MazeView;
@@ -38,10 +39,10 @@ public class MazeController {
     public void init(){
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid();
-//        mazeModel.init();
         setBadguy();
         setPlayer();
         addKeyListener();
+        addMouseEventListener();
 
     }
 
@@ -49,11 +50,11 @@ public class MazeController {
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
                 mazeModel.cellControllers[i][j] = new CellController(mazeModel.getMap()[i][j]);
-//                System.out.println(mazeModel.getMap()[i][j]);
                 mazeModel.cellControllers[i][j].cellView.setTranslateX(i * panelSize);
                 mazeModel.cellControllers[i][j].cellView.setTranslateY(j * panelSize);
 
                 mazeView.getChildren().add(mazeModel.cellControllers[i][j].cellView);
+
             }
     }
 
@@ -127,7 +128,25 @@ public class MazeController {
             }
         });
     }
-    public void setBadGuyMoveTimer() {
+
+    public void addMouseEventListener(){
+        for (int i = 0; i < mazeModel.rows; i++)
+            for (int j = 0; j < mazeModel.columns; j++) {
+                if (mazeModel.getMap()[i][j] == 2) {
+                    mazeModel.cellControllers[i][j].cellView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                                if (mouseEvent.getClickCount() == 5) {
+                                    System.out.println("5 clicked");
+                                }
+                            }
+                        }
+                    });
+                }
+            }}
+
+    public void setBadGuyMoveTimer(){
         try {
             timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -168,7 +187,7 @@ public class MazeController {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("GAME OVER");
         alert.setHeaderText("GAME OVER");
-        alert.setContentText("you are catched by a bad guy!");
+        alert.setContentText("you are caught by a bad guy!");
         alert.show();
     }
 

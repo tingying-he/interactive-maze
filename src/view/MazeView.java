@@ -9,10 +9,8 @@ import javafx.scene.layout.StackPane;
  * @Date: 2020/10/03/20:39
  * @Description:
  */
-public class MazeView extends StackPane {
+public class MazeView extends Pane {
 
-
-//    public Pane mazePane;
 
 
     public MazeController mazeController;
@@ -20,7 +18,6 @@ public class MazeView extends StackPane {
 
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
-//        setVisible(true);
         this.setFocusTraversable(true);
 
     }

@@ -13,7 +13,7 @@ import javafx.scene.layout.StackPane;
 /**
  * Created by Tingying He on 2020/10/14.
  */
-public class CellView extends StackPane {
+public class CellView extends Pane {
     //    private Pane cellContent = new Pane();
     CellController cellController;
 

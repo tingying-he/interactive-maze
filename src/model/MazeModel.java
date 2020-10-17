@@ -74,4 +74,8 @@ public class MazeModel{
     public int[][] getMap() {
         return this.map;
     }
+
+    public void setMap(int[][] map) {
+        this.map = map;
+    }
 }
