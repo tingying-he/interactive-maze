@@ -26,7 +26,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Model - View - Controller");
 
-        primaryStage.setScene(new Scene(mazeController.mazeView, 800, 680));
+        primaryStage.setScene(new Scene(mazeController.mazeView, 1800, 1680));
         primaryStage.show();
     }
 

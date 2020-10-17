@@ -1,6 +1,10 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Cell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import model.MazeModel;
 import view.MazeView;
 
@@ -33,6 +37,9 @@ public class MazeController {
         createCellsGrid();
 //        mazeModel.init();
         setBadguy();
+        setPlayer();
+        addKeyListener();
+
     }
 
     private void createCellsGrid() {
@@ -70,5 +77,50 @@ public class MazeController {
         mazeModel.badGuyController1.setBadGuyMoveTimer();
     }
 
+    public void setPlayer(){
+        for (int i = 0; i < mazeModel.rows; i++)
+            for (int j = 0; j < mazeModel.columns; j++) {
+                if(i == 0  && mazeModel.map[i][j] == 1){
+                    mazeModel.playerController.playerView.setTranslateX(i *  panelSize);
+                    mazeModel.playerController.playerView.setTranslateY(j *  panelSize);
+                    mazeModel.playerController.playerView.x = i;
+                    mazeModel.playerController.playerView.y = j;
+                }
+            }
+        mazeView.getChildren().addAll( mazeModel.playerController.playerView);
+    }
+
+    public void addKeyListener() {
+        mazeView.setOnMouseClicked(event -> mazeView.requestFocus());
+        mazeView.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode().toString()) {
+                    case "UP":
+                        mazeModel.playerController.playerView.moveUp();
+                        System.out.println("UP");
+                        break;
+                    case "DOWN":
+                        mazeModel.playerController.playerView.moveDown();
+                        System.out.println("down");
+                        break;
+                    case "LEFT":
+                        mazeModel.playerController.playerView.moveLeft();
+                        System.out.println("left");
+                        break;
+                    case "RIGHT":
+                        mazeModel.playerController.playerView.moveRight();
+                        System.out.println("right");
+                        break;
+                }
+
+                if (event.getCode() == KeyCode.ENTER) {
+                    System.out.println("Enter Pressed");
+                }
+            }
+        });
+    }
 
 }
+

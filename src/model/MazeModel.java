@@ -3,6 +3,7 @@ package model;
 import controller.BadGuyController;
 import controller.CellController;
 import controller.MazeController;
+import controller.PlayerController;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,6 +21,7 @@ public class MazeModel{
     public CellController[][] cellControllers;
     public BadGuyController badGuyController0 = new BadGuyController(0);
     public BadGuyController badGuyController1 = new BadGuyController(1);
+    public PlayerController playerController = new PlayerController(0);
 
 
     public static int map[][] = new int[columns][rows];

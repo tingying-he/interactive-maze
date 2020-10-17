@@ -2,13 +2,14 @@ package view;
 
 import controller.MazeController;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 /**
  * @Auther: Anqi Yang
  * @Date: 2020/10/03/20:39
  * @Description:
  */
-public class MazeView extends Pane {
+public class MazeView extends StackPane {
 
 
 //    public Pane mazePane;
@@ -20,7 +21,7 @@ public class MazeView extends Pane {
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
 //        setVisible(true);
-//        this.setFocusTraversable(true);
+        this.setFocusTraversable(true);
 
     }
 }
