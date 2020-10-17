@@ -20,30 +20,8 @@ public class PlayerController {
 
         playerModel = new PlayerModel(this);
         playerView = new PlayerView(this);
-//        addKeyListener();
 
     }
-
-
-
-//    public void keyEventHandler(KeyEvent event) {
-//        KeyCode key = event.getCode();
-//
-//
-//        //Player movement
-//        if(key == KeyCode.UP){
-//            playerView.moveUp();
-//        }
-//        if(key == KeyCode.DOWN){
-//            playerView.moveDown();
-//        }
-//        if(key == KeyCode.LEFT){
-//            playerView.moveLeft();
-//        }
-//        if(key == KeyCode.RIGHT){
-//            playerView.moveRight();
-//        }
-//    }
 
 }
 

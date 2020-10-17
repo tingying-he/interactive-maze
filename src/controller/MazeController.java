@@ -2,6 +2,7 @@ package controller;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Cell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -153,11 +154,22 @@ public class MazeController {
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
             System.out.println("Catch by bad guy!");
+            lose();
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
+            lose();
         }
+
+    }
+
+    public void lose(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("GAME OVER");
+        alert.setHeaderText("GAME OVER");
+        alert.setContentText("you are catched by a bad guy!");
+        alert.show();
     }
 
 }
