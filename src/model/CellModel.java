@@ -24,7 +24,7 @@ public class CellModel {
 //    public int x;
 //    public int y;
 
-    public static int panelSize = 25;
+
 
     public CellController cellController;
 

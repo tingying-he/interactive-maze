@@ -1,5 +1,6 @@
 package model;
 
+import controller.BadGuyController;
 import controller.CellController;
 import controller.MazeController;
 
@@ -17,6 +18,9 @@ public class MazeModel{
     public static int columns = 20;
 //    public static int panelSize = 25;
     public CellController[][] cellControllers;
+    public BadGuyController badGuyController0 = new BadGuyController(0);
+    public BadGuyController badGuyController1 = new BadGuyController(1);
+
 
     public static int map[][] = new int[columns][rows];
 

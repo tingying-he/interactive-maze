@@ -18,10 +18,11 @@ import view.*;
 public class Main extends Application {
     int characterNum = 0;
 //    String filename;
+    public static int panelSize = 25;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        MazeController mazeController = new MazeController("Level 0",characterNum);
+        MazeController mazeController = new MazeController("Level 0",characterNum,panelSize);
 
         primaryStage.setTitle("Model - View - Controller");
 

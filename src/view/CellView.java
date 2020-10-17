@@ -1,5 +1,6 @@
 package view;
 
+import application.Main;
 import controller.CellController;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
@@ -27,22 +28,22 @@ public class CellView extends StackPane {
         if (type == 0) {
             Image wallImg = new Image("img/wall.png");
             ImageView wallImgView = new ImageView(wallImg);
-            wallImgView.setFitWidth(cellController.cellModel.panelSize);
-            wallImgView.setFitHeight(cellController.cellModel.panelSize);
+            wallImgView.setFitWidth(Main.panelSize);
+            wallImgView.setFitHeight(Main.panelSize);
             this.getChildren().add(wallImgView);
 
         } else if (type == 1) {
             Image whiteImg = new Image("img/white.png");
             ImageView whiteImgView = new ImageView(whiteImg);
-            whiteImgView.setFitWidth(cellController.cellModel.panelSize);
-            whiteImgView.setFitHeight(cellController.cellModel.panelSize);
+            whiteImgView.setFitWidth(Main.panelSize);
+            whiteImgView.setFitHeight(Main.panelSize);
             this.getChildren().add(whiteImgView);
 
         } else if (type == 2) { //
             Image bushImg = new Image("img/bush.png");
             ImageView bushImgView = new ImageView(bushImg);
-            bushImgView.setFitWidth(cellController.cellModel.panelSize);
-            bushImgView.setFitHeight(cellController.cellModel.panelSize);
+            bushImgView.setFitWidth(Main.panelSize);
+            bushImgView.setFitHeight(Main.panelSize);
             this.getChildren().add(bushImgView);
 
         }
