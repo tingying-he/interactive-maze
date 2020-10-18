@@ -12,26 +12,26 @@ import javafx.scene.layout.VBox;
  */
 public class GamePage extends BorderPane {
     public String filename;
-    int characterNum;
+    String characterColor;
 
     Pane toolbarPane;
     public MazeController mazeController;
 
 
-    public GamePage(String filename, int characterNum){
+    public GamePage(String filename, String characterColor){
         this.filename = filename;
-        this.characterNum = characterNum;
-        init(filename,characterNum);
+        this.characterColor = characterColor;
+        init(filename,characterColor);
 
     }
 
-    public void init(String filename, int characterNum){
+    public void init(String filename, String characterColor){
         this.setPrefSize(800,600);
         toolbarPane = new Pane();
         toolbarPane.setPrefSize(800,100);
         toolbarPane.setStyle("-fx-background-color:LIGHTGREY");
 
-        mazeController = new MazeController(filename,characterNum);
+        mazeController = new MazeController(filename,characterColor);
 
         this.setTop(toolbarPane);
         this.setCenter(mazeController.mazeView);

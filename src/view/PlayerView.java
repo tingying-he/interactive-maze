@@ -20,10 +20,10 @@ public class PlayerView extends StackPane {
 
     public PlayerView(PlayerController playerController){
         this.playerController = playerController;
-        init(playerController.characterNum);
+        init(playerController.characterColor);
     }
-    public void init(int characterNum){
-        player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterNum);
+    public void init(String characterColor){
+        player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterColor);
         this.getChildren().addAll(player);
     }
 
@@ -55,8 +55,8 @@ public class PlayerView extends StackPane {
         }
     }
 
-    public ImageView putCharacter(int w, int h, int characterNum ){
-        Image img = new Image("/img/character"+characterNum+".png");
+    public ImageView putCharacter(int w, int h, String characterColor ){
+        Image img = new Image("/img/character"+characterColor+".png");
         ImageView imgView = new ImageView(img);
         imgView.setFitWidth(w);
         imgView.setFitHeight(h);
