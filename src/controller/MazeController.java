@@ -26,7 +26,8 @@ public class MazeController {
 
     public MazeModel mazeModel ;
     public MazeView mazeView;
-    public Timer timer;
+    public Timer badguyTimer;
+    public Timer keyTimer;
 
 
     public MazeController(String filename, int characterNum){
@@ -46,6 +47,7 @@ public class MazeController {
         createCellsGrid(filename);
         setBadguy();
         setPlayer(characterNum);
+        setKey();
     }
 
     public void createCellsGrid(String filename) {
@@ -96,6 +98,21 @@ public class MazeController {
             }
         mazeModel.playerController.playerView.toFront();
         mazeView.getChildren().addAll( mazeModel.playerController.playerView);
+    }
+
+    public void setKey(){
+        for (int i = 0; i < mazeModel.rows; i++)
+            for (int j = 0; j < mazeModel.columns; j++) {
+                if(i == 8  && j == 8){
+                    mazeModel.keyController.keyView.setTranslateX(i *  MazeModel.panelSize);
+                    mazeModel.keyController.keyView.setTranslateY(j *  MazeModel.panelSize);
+                    mazeModel.keyController.x = i;
+                    mazeModel.keyController.y = j;
+                    mazeModel.keyController.keyView.toFront();
+                }
+            }
+        mazeView.getChildren().addAll(mazeModel.keyController.keyView);
+        setKeyMoveTimer();
     }
 
     public void addKeyListener() {
@@ -164,8 +181,8 @@ public class MazeController {
 
     public void setBadGuyMoveTimer(){
         try {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+            badguyTimer = new Timer();
+            badguyTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     Platform.runLater(new Runnable() {
@@ -185,18 +202,42 @@ public class MazeController {
         }
     }
 
+    public void setKeyMoveTimer(){
+        try {
+            keyTimer = new Timer();
+            keyTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            mazeModel.keyController.randomMove();
+                            checkCollision();
+                        }
+                    });
+
+
+                }
+            }, 0, 500);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void checkCollision(){
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
             System.out.println("Catch by bad guy!");
             lose();
-            timer.cancel();
+            badguyTimer.cancel();
+            keyTimer.cancel();
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
             lose();
-            timer.cancel();
+            badguyTimer.cancel();
+            keyTimer.cancel();
         }
 
     }
@@ -218,6 +259,7 @@ public class MazeController {
         mazeView.getChildren().remove(mazeModel.playerController.playerView);
         mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
         mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
+        mazeView.getChildren().remove(mazeModel.keyController.keyView);
         init(filename,characterNum);
     }
 
