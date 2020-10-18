@@ -1,6 +1,8 @@
 package controller;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -171,6 +173,14 @@ public class MazeController {
                 int a = i;
                 int b = j;
                 if (mazeModel.getMap()[i][j] == 2) {
+                    ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1500), mazeModel.cellControllers[i][j].cellView);
+                    scaleTransition.setFromX(0.8);
+                    scaleTransition.setFromY(0.8);
+                    scaleTransition.setToX(1);
+                    scaleTransition.setToY(1);
+                    scaleTransition.setCycleCount(Timeline.INDEFINITE);
+                    scaleTransition.setAutoReverse(true);
+                    scaleTransition.play();
                     mazeModel.cellControllers[i][j].cellView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {

@@ -19,6 +19,7 @@ public class MazeView extends Pane {
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
         this.setFocusTraversable(true);
+        this.setStyle("-fx-background-color:#4D5156");
 
     }
 }
