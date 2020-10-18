@@ -19,7 +19,7 @@ import java.util.TimerTask;
  */
 public class MazeController {
     public String filename;
-    int characterNum;
+    public int characterNum;
     public int panelSize;
 
     public MazeModel mazeModel ;
@@ -31,18 +31,20 @@ public class MazeController {
         this.filename = filename;
         this.characterNum = characterNum;
         this.panelSize = panelSize;
+        mazeView = new MazeView(this);
         mazeModel = new MazeModel(this);
-        mazeView  = new MazeView(this);
-        init();
-    }
 
-    public void init(){
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid();
         setBadguy();
-        setPlayer();
+        setPlayer(characterNum);
         addKeyListener();
         addMouseEventListener();
+
+//        init(filename,characterNum,panelSize);
+    }
+
+    public void init(String filename, int characterNum, int panelSize){
 
     }
 
@@ -80,10 +82,11 @@ public class MazeController {
         setBadGuyMoveTimer();
     }
 
-    public void setPlayer(){
+    public void setPlayer(int characterNum){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
                 if(i == 0  && mazeModel.map[i][j] == 1){
+                    mazeModel.playerController.playerView.init(characterNum);
                     mazeModel.playerController.playerView.setTranslateX(i *  panelSize);
                     mazeModel.playerController.playerView.setTranslateY(j *  panelSize);
                     mazeModel.playerController.playerView.x = i;

@@ -21,7 +21,7 @@ public class MazeModel{
     public CellController[][] cellControllers;
     public BadGuyController badGuyController0 = new BadGuyController(0);
     public BadGuyController badGuyController1 = new BadGuyController(1);
-    public PlayerController playerController = new PlayerController(0);
+    public PlayerController playerController;
 
 
     public static int map[][] = new int[columns][rows];
@@ -30,6 +30,8 @@ public class MazeModel{
 
     public MazeModel(MazeController mazeController) {
         this.mazeController = mazeController;
+        this.playerController = new PlayerController(mazeController.characterNum);
+
         loadMaze(mazeController.filename);
     }
 

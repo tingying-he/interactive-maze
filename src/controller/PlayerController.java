@@ -17,6 +17,7 @@ public class PlayerController {
     public PlayerView playerView;
 
     public PlayerController(int characterNum){
+        this.characterNum = characterNum;
 
         playerModel = new PlayerModel(this);
         playerView = new PlayerView(this);
