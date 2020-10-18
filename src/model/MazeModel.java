@@ -21,6 +21,8 @@ public class MazeModel{
     public PlayerController playerController;
     public KeyController keyController = new KeyController();
 
+    public boolean hasKey = false;
+
 
     public static int map[][] = new int[columns][rows];
 
@@ -78,4 +80,5 @@ public class MazeModel{
     public void setMap(int[][] map) {
         this.map = map;
     }
+
 }

@@ -125,24 +125,28 @@ public class MazeController {
                     case "UP":
                         mazeModel.playerController.playerView.moveUp();
                         checkCollision();
+                        checkGetKey();
                         checkWin();
 //                        System.out.println("UP");
                         break;
                     case "DOWN":
                         mazeModel.playerController.playerView.moveDown();
                         checkCollision();
+                        checkGetKey();
                         checkWin();
 //                        System.out.println("down");
                         break;
                     case "LEFT":
                         mazeModel.playerController.playerView.moveLeft();
                         checkCollision();
+                        checkGetKey();
                         checkWin();
 //                        System.out.println("left");
                         break;
                     case "RIGHT":
                         mazeModel.playerController.playerView.moveRight();
                         checkCollision();
+                        checkGetKey();
                         checkWin();
 //                        System.out.println("right");
                         break;
@@ -212,7 +216,7 @@ public class MazeController {
                         @Override
                         public void run() {
                             mazeModel.keyController.randomMove();
-                            checkCollision();
+                            checkGetKey();
                         }
                     });
 
@@ -242,6 +246,17 @@ public class MazeController {
 
     }
 
+    public void checkGetKey(){
+        if(!mazeModel.hasKey) {
+            if (mazeModel.playerController.playerView.x == mazeModel.keyController.x
+                    && mazeModel.playerController.playerView.y == mazeModel.keyController.y) {
+                mazeModel.hasKey = true;
+                System.out.println("you get key");
+                mazeModel.keyController.keyView.setVisible(false);
+            }
+        }
+    }
+
     public void lose(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
@@ -260,22 +275,32 @@ public class MazeController {
         mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
         mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
         mazeView.getChildren().remove(mazeModel.keyController.keyView);
+        mazeModel.hasKey = false;
         init(filename,characterNum);
     }
 
     public void checkWin(){
+
         if(mazeModel.playerController.playerView.x == MazeModel.columns - 1){
-            System.out.println("win!");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
-            alert.setTitle("YOU WIN");
-            alert.setHeaderText("YOU WIN");
-            alert.setContentText("You go out of the maze!");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    restart();
-                }
-            });
+            if(mazeModel.hasKey) {
+                System.out.println("win!");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
+                alert.setTitle("YOU WIN");
+                alert.setHeaderText("YOU WIN");
+                alert.setContentText("You go out of the maze!");
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        restart();
+                    }
+                });
+            }else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No key");
+                alert.setHeaderText("No Key");
+                alert.setContentText("You cannot go out of maze without a key!Try to get it!");
+                alert.show();
+            }
         }
     }
 
