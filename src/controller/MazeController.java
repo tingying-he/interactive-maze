@@ -37,8 +37,7 @@ public class MazeController {
         mazeModel = new MazeModel(this);
         mazeView  = new MazeView(this);
         init(filename,characterNum);
-        addKeyListener();
-        addMouseEventListener();
+
     }
 
     public void init(String filename, int characterNum){
@@ -48,6 +47,8 @@ public class MazeController {
         setBadguy();
         setPlayer(characterNum);
         setKey();
+        addKeyListener();
+        addMouseEventListener();
     }
 
     public void createCellsGrid(String filename) {
@@ -233,16 +234,16 @@ public class MazeController {
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
             System.out.println("Catch by bad guy!");
-            lose();
             badguyTimer.cancel();
             keyTimer.cancel();
+            lose();
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
-            lose();
             badguyTimer.cancel();
             keyTimer.cancel();
+            lose();
         }
 
     }
