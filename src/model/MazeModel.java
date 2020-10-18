@@ -1,15 +1,7 @@
 package model;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.Color;
-import view.PlayerView;
+import controller.*;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -19,19 +11,33 @@ import java.io.FileReader;
  * @Date: 2020/10/03/17:50
  * @Description:
  */
-public class MazeModel extends Pane{
+public class MazeModel{
     public static int rows = 20;
     public static int columns = 20;
     public static int panelSize = 25;
+    public CellController[][] cellControllers;
+    public BadGuyController badGuyController0 = new BadGuyController(0);
+    public BadGuyController badGuyController1 = new BadGuyController(1);
+    public PlayerController playerController;
+    public KeyController keyController = new KeyController();
+
+    public boolean hasKey = false;
+
 
     public static int map[][] = new int[columns][rows];
-    public String filename;
 
-    public MazeModel(String filename) {
-        this.filename = filename;
+    private MazeController mazeController;
 
-        loadMaze(filename);
+    public MazeModel(MazeController mazeController) {
+        this.mazeController = mazeController;
+        this.playerController = new PlayerController(mazeController.characterNum);
+
+        loadMaze(mazeController.filename);
     }
+
+//    public void init(){
+//
+//    }
 
     public void loadMaze(String filename) {
         try{
@@ -70,4 +76,9 @@ public class MazeModel extends Pane{
     public int[][] getMap() {
         return this.map;
     }
+
+    public void setMap(int[][] map) {
+        this.map = map;
+    }
+
 }

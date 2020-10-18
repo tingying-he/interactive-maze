@@ -1,24 +1,19 @@
 package view;
 
-//import com.sun.tools.javadoc.Start;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+
 /**
- * Created by Tingying He on 2020/10/4.
+ * Created by Tingying He on 2020/10/18.
  */
-public class ChooseLevelView extends VBox {
+public class LevelPage extends VBox {
     public Button easyBtn = new Button("EASY");
     public Button hardBtn = new Button("HARD");
     public Button backBtn = new Button("Back");
 
-    public ChooseLevelView(){
+    public LevelPage(){
         easyBtn.setPrefSize(100,40);
         easyBtn.setStyle("-fx-background-color:RED");
         easyBtn.setTextFill(Color.WHITE);

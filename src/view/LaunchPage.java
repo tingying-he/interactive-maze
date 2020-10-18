@@ -1,29 +1,20 @@
 package view;
 
-//import com.sun.tools.javadoc.Start;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 /**
- * Created by Tingying He on 2020/10/4.
+ * Created by Tingying He on 2020/10/18.
  */
-public class LaunchView extends VBox {
+public class LaunchPage extends VBox {
 
     public Button startBtn;
     public Button helpBtn;
 
 
-    public LaunchView(){
+    public LaunchPage(){
 
 
         //buttons

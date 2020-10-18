@@ -1,5 +1,7 @@
 package application;
 
+import com.sun.javafx.logging.PlatformLogger;
+import controller.MazeController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -14,53 +16,54 @@ import view.*;
  * @Date: 2020/10/03/15:50
  * @Description:
  */
+
 public class Main extends Application {
-    int characterNum = 0;
-    String filename;
+    public int characterNum;
+    public String filename;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        App app = new App(filename,characterNum) ;
+        GamePage gamePage = new GamePage(filename,characterNum);
         Pane root = new Pane();
-        root.getChildren().add(app);
-        Scene GameScene = new Scene(root,800,600);
+        root.getChildren().add(gamePage);
+        Scene gameScene = new Scene(root,800,600);
 
         //router between pages
-        ChooseCharacterView chooseCharacterView = new ChooseCharacterView(characterNum);
-        ChooseLevelView levelView = new ChooseLevelView();
+        CharacterPage characterPage = new CharacterPage(characterNum);
+        LevelPage levelPage = new LevelPage();
 
-        Scene levelScene = new Scene(levelView,800,600);
+        Scene levelScene = new Scene(levelPage,800,600);
 
-        Scene chooseCharacterScene = new Scene(chooseCharacterView,800,600);
+        Scene chooseCharacterScene = new Scene(characterPage,800,600);
 
-        chooseCharacterView.selectBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        characterPage.selectBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(levelScene);
             }
         });
 
-        chooseCharacterView.changeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        characterPage.changeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 characterNum++;
                 characterNum =  characterNum % 3;
                 System.out.println(characterNum);
-                chooseCharacterView.repaint(characterNum);
-                app.myMazeView.player.init(characterNum);
+                characterPage.repaint(characterNum);
+                gamePage.init(filename,characterNum);
             }
         });
 
 
-        HelpView helpView = new HelpView();
-        Scene helpScene = new Scene(helpView,800,600);
+        HelpPage helpPage = new HelpPage();
+        Scene helpScene = new Scene(helpPage,800,600);
 
 
-        LaunchView launchView = new LaunchView();
-        Scene launchScene = new Scene(launchView,800,600);
+        LaunchPage launchPage = new LaunchPage();
+        Scene launchScene = new Scene(launchPage,800,600);
 
-        launchView.startBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        launchPage.startBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(chooseCharacterScene);
@@ -68,7 +71,7 @@ public class Main extends Application {
         });
 
 
-        launchView.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        launchPage.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(helpScene);
@@ -76,7 +79,7 @@ public class Main extends Application {
         });
 
 
-        helpView.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        helpPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(launchScene);
@@ -84,35 +87,35 @@ public class Main extends Application {
         });
 
 
-        chooseCharacterView.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        characterPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(launchScene);
             }
         });
 
-        levelView.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        levelPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 primaryStage.setScene(launchScene);
             }
         });
 
-        levelView.easyBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        levelPage.easyBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 0";
-                app.initUI(filename,characterNum);
-                primaryStage.setScene(GameScene);
+                gamePage.init(filename,characterNum);
+                primaryStage.setScene(gameScene);
             }
         });
 
-        levelView.hardBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        levelPage.hardBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 1";
-                app.initUI(filename,characterNum);
-                primaryStage.setScene(GameScene);
+                gamePage.init(filename,characterNum);
+                primaryStage.setScene(gameScene);
             }
         });
 

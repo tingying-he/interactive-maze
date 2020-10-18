@@ -1,33 +1,26 @@
 package view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import application.Main;
+import controller.PlayerController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
 
 
 /**
- * @Auther: Anqi Yang
- * @Date: 2020/10/03/20:56
- * @Description:
+ * Created by Tingying He on 2020/10/17.
  */
 public class PlayerView extends StackPane {
-    int x, y;
-//    public int characterNum;
+    public PlayerController playerController;
 
-//    ChooseCharacterView chooseCharacterView = new ChooseCharacterView();
+    public int x, y;
     private ImageView player;
 
-
-    public PlayerView(int characterNum) {
-        player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterNum);
-        this.getChildren().addAll(player);
+    public PlayerView(PlayerController playerController){
+        this.playerController = playerController;
+        init(playerController.characterNum);
     }
     public void init(int characterNum){
         player = putCharacter(MazeModel.panelSize,MazeModel.panelSize,characterNum);
@@ -36,28 +29,28 @@ public class PlayerView extends StackPane {
 
     public void moveLeft() {
         if(x > 0 && MazeModel.map[x-1][y] == 1){
-            this.setTranslateX(this.x * MazeView.panelSize-25);
+            this.setTranslateX(this.x * MazeModel.panelSize-25);
             x--;
         }
     }
 
     public void moveRight() {
         if(x < MazeModel.columns-1 && MazeModel.map[x+1][y] == 1){
-            this.setTranslateX(this.x * MazeView.panelSize+25);
+            this.setTranslateX(this.x * MazeModel.panelSize+25);
             x++;
         }
     }
 
     public void moveUp() {
         if(y > 0 && MazeModel.map[x][y-1] == 1){
-            this.setTranslateY(this.y * MazeView.panelSize - 25);
+            this.setTranslateY(this.y * MazeModel.panelSize - 25);
             y--;
         }
     }
 
     public void moveDown() {
         if(y < MazeModel.rows-1 && MazeModel.map[x][y+1] == 1){
-            this.setTranslateY(this.y * MazeView.panelSize + 25);
+            this.setTranslateY(this.y * MazeModel.panelSize + 25);
             y++;
         }
     }
