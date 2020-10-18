@@ -108,22 +108,26 @@ public class MazeController {
                     case "UP":
                         mazeModel.playerController.playerView.moveUp();
                         checkCollision();
-                        System.out.println("UP");
+                        checkWin();
+//                        System.out.println("UP");
                         break;
                     case "DOWN":
                         mazeModel.playerController.playerView.moveDown();
                         checkCollision();
-                        System.out.println("down");
+                        checkWin();
+//                        System.out.println("down");
                         break;
                     case "LEFT":
                         mazeModel.playerController.playerView.moveLeft();
                         checkCollision();
-                        System.out.println("left");
+                        checkWin();
+//                        System.out.println("left");
                         break;
                     case "RIGHT":
                         mazeModel.playerController.playerView.moveRight();
                         checkCollision();
-                        System.out.println("right");
+                        checkWin();
+//                        System.out.println("right");
                         break;
                 }
 
@@ -205,12 +209,32 @@ public class MazeController {
         alert.setContentText("you are caught by a bad guy!");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                mazeView.getChildren().remove(mazeModel.playerController.playerView);
-                mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
-                mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
-                init(filename,characterNum);
+                restart();
             }
         });
+    }
+
+    public void restart(){
+        mazeView.getChildren().remove(mazeModel.playerController.playerView);
+        mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
+        mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
+        init(filename,characterNum);
+    }
+
+    public void checkWin(){
+        if(mazeModel.playerController.playerView.x == MazeModel.columns - 1){
+            System.out.println("win!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
+            alert.setTitle("YOU WIN");
+            alert.setHeaderText("YOU WIN");
+            alert.setContentText("You go out of the maze!");
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    restart();
+                }
+            });
+        }
     }
 
 }
