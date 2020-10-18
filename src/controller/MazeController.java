@@ -109,6 +109,7 @@ public class MazeController {
                     mazeModel.keyController.x = i;
                     mazeModel.keyController.y = j;
                     mazeModel.keyController.keyView.toFront();
+                    mazeModel.keyController.keyView.setVisible(true);
                 }
             }
         mazeView.getChildren().addAll(mazeModel.keyController.keyView);
