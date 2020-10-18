@@ -17,7 +17,7 @@ import java.io.FileReader;
 public class MazeModel{
     public static int rows = 20;
     public static int columns = 20;
-//    public static int panelSize = 25;
+    public static int panelSize = 25;
     public CellController[][] cellControllers;
     public BadGuyController badGuyController0 = new BadGuyController(0);
     public BadGuyController badGuyController1 = new BadGuyController(1);

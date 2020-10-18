@@ -16,15 +16,18 @@ public class GamePage extends BorderPane {
     public MazeController mazeController;
 
 
-    public GamePage(String filename, int characterNum, int panelSize){
+    public GamePage(String filename, int characterNum){
         this.filename = filename;
         this.characterNum = characterNum;
-        this.panelSize = panelSize;
+        init(filename,characterNum);
 
+    }
+
+    public void init(String filename, int characterNum){
         toolbarPane = new Pane();
         toolbarPane.setStyle("-fx-background-color:LIGHTGREY");
 
-        mazeController = new MazeController(filename,characterNum,panelSize);
+        mazeController = new MazeController(filename,characterNum);
 
         this.setTop(toolbarPane);
         this.setCenter(mazeController.mazeView);

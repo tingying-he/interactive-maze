@@ -20,40 +20,40 @@ import java.util.TimerTask;
 public class MazeController {
     public String filename;
     public int characterNum;
-    public int panelSize;
+
 
     public MazeModel mazeModel ;
     public MazeView mazeView;
     public Timer timer;
 
 
-    public MazeController(String filename, int characterNum, int panelSize){
+    public MazeController(String filename, int characterNum){
         this.filename = filename;
         this.characterNum = characterNum;
-        this.panelSize = panelSize;
         mazeView = new MazeView(this);
         mazeModel = new MazeModel(this);
-
+        mazeView  = new MazeView(this);
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
-        createCellsGrid();
+        init(filename,characterNum);
+    }
+
+    public void init(String filename, int characterNum){
+
+        createCellsGrid(filename);
         setBadguy();
         setPlayer(characterNum);
         addKeyListener();
         addMouseEventListener();
 
-//        init(filename,characterNum,panelSize);
     }
 
-    public void init(String filename, int characterNum, int panelSize){
-
-    }
-
-    private void createCellsGrid() {
+    public void createCellsGrid(String filename) {
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
+                mazeModel.loadMaze(filename);
                 mazeModel.cellControllers[i][j] = new CellController(mazeModel.getMap()[i][j]);
-                mazeModel.cellControllers[i][j].cellView.setTranslateX(i * panelSize);
-                mazeModel.cellControllers[i][j].cellView.setTranslateY(j * panelSize);
+                mazeModel.cellControllers[i][j].cellView.setTranslateX(i * MazeModel.panelSize);
+                mazeModel.cellControllers[i][j].cellView.setTranslateY(j * MazeModel.panelSize);
 
                 mazeView.getChildren().add(mazeModel.cellControllers[i][j].cellView);
 
@@ -64,15 +64,15 @@ public class MazeController {
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
                 if(i == 4  && j == 4){
-                    mazeModel.badGuyController0.badGuyView.setTranslateX(i *  panelSize);
-                    mazeModel.badGuyController0.badGuyView.setTranslateY(j *  panelSize);
+                    mazeModel.badGuyController0.badGuyView.setTranslateX(i *  MazeModel.panelSize);
+                    mazeModel.badGuyController0.badGuyView.setTranslateY(j *  MazeModel.panelSize);
                     mazeModel.badGuyController0.x = i;
                     mazeModel.badGuyController0.y = j;
                     mazeModel.badGuyController0.badGuyView.toFront();
                 }
                 if(i == 16 && j == 16){
-                    mazeModel.badGuyController1.badGuyView.setTranslateX(i *  panelSize);
-                    mazeModel.badGuyController1.badGuyView.setTranslateY(j *  panelSize);
+                    mazeModel.badGuyController1.badGuyView.setTranslateX(i *  MazeModel.panelSize);
+                    mazeModel.badGuyController1.badGuyView.setTranslateY(j *  MazeModel.panelSize);
                     mazeModel.badGuyController1.x = i;
                     mazeModel.badGuyController1.y = j;
                     mazeModel.badGuyController1.badGuyView.toFront();
@@ -87,8 +87,8 @@ public class MazeController {
             for (int j = 0; j < mazeModel.columns; j++) {
                 if(i == 0  && mazeModel.map[i][j] == 1){
                     mazeModel.playerController.playerView.init(characterNum);
-                    mazeModel.playerController.playerView.setTranslateX(i *  panelSize);
-                    mazeModel.playerController.playerView.setTranslateY(j *  panelSize);
+                    mazeModel.playerController.playerView.setTranslateX(i *  MazeModel.panelSize);
+                    mazeModel.playerController.playerView.setTranslateY(j *  MazeModel.panelSize);
                     mazeModel.playerController.playerView.x = i;
                     mazeModel.playerController.playerView.y = j;
                 }

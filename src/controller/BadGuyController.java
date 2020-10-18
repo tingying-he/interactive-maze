@@ -54,28 +54,28 @@ public class BadGuyController {
 
     public void moveLeft() {
         if(x > 0 && MazeModel.map[x-1][y] == 1){
-            badGuyView.setTranslateX(this.x * Main.panelSize-25);
+            badGuyView.setTranslateX(this.x * MazeModel.panelSize-25);
             x--;
         }
     }
 
     public void moveRight() {
         if(x < MazeModel.columns-1 && MazeModel.map[x+1][y] == 1){
-            badGuyView.setTranslateX(this.x * Main.panelSize+25);
+            badGuyView.setTranslateX(this.x * MazeModel.panelSize+25);
             x++;
         }
     }
 
     public void moveUp() {
         if(y > 0 && MazeModel.map[x][y-1] == 1){
-            badGuyView.setTranslateY(this.y * Main.panelSize - 25);
+            badGuyView.setTranslateY(this.y * MazeModel.panelSize - 25);
             y--;
         }
     }
 
     public void moveDown() {
         if(y < MazeModel.rows-1 && MazeModel.map[x][y+1] == 1){
-            badGuyView.setTranslateY(this.y * Main.panelSize + 25);
+            badGuyView.setTranslateY(this.y * MazeModel.panelSize + 25);
             y++;
         }
     }

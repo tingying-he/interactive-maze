@@ -40,15 +40,14 @@ import view.*;
 public class Main extends Application {
     int characterNum;
     String filename;
-        public static int panelSize = 25;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        GamePage gamePage = new GamePage(filename,characterNum,panelSize);
+        GamePage gamePage = new GamePage(filename,characterNum);
         Pane root = new Pane();
         root.getChildren().add(gamePage);
-        Scene GameScene = new Scene(root,800,600);
+        Scene gameScene = new Scene(root,800,600);
 
         //router between pages
         CharacterPage characterPage = new CharacterPage(characterNum);
@@ -126,8 +125,8 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 0";
-                gamePage.mazeController.mazeModel.loadMaze(filename);
-                primaryStage.setScene(GameScene);
+                gamePage.init(filename,characterNum);
+                primaryStage.setScene(gameScene);
             }
         });
 
@@ -135,8 +134,8 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 1";
-                gamePage.mazeController.mazeModel.loadMaze(filename);
-                primaryStage.setScene(GameScene);
+                gamePage.init(filename,characterNum);
+                primaryStage.setScene(gameScene);
             }
         });
 
