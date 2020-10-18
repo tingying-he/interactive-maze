@@ -3,6 +3,8 @@ package controller;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Cell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -33,18 +35,17 @@ public class MazeController {
         mazeView = new MazeView(this);
         mazeModel = new MazeModel(this);
         mazeView  = new MazeView(this);
-        mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         init(filename,characterNum);
+        addKeyListener();
+        addMouseEventListener();
     }
 
     public void init(String filename, int characterNum){
 
+        mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid(filename);
         setBadguy();
         setPlayer(characterNum);
-        addKeyListener();
-        addMouseEventListener();
-
     }
 
     public void createCellsGrid(String filename) {
@@ -185,21 +186,31 @@ public class MazeController {
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
             System.out.println("Catch by bad guy!");
             lose();
+            timer.cancel();
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
             lose();
+            timer.cancel();
         }
 
     }
 
     public void lose(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
         alert.setTitle("GAME OVER");
         alert.setHeaderText("GAME OVER");
         alert.setContentText("you are caught by a bad guy!");
-        alert.show();
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                mazeView.getChildren().remove(mazeModel.playerController.playerView);
+                mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
+                mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
+                init(filename,characterNum);
+            }
+        });
     }
 
 }

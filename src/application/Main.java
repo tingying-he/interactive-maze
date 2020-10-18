@@ -16,30 +16,10 @@ import view.*;
  * @Date: 2020/10/03/15:50
  * @Description:
  */
-//public class Main extends Application {
-//    int characterNum = 0;
-////    String filename;
-//    public static int panelSize = 25;
-//
-//    @Override
-//    public void start(Stage primaryStage) throws Exception{
-//        MazeController mazeController = new MazeController("Level 0",characterNum,panelSize);
-//
-//        primaryStage.setTitle("Model - View - Controller");
-//
-//        primaryStage.setScene(new Scene(mazeController.mazeView, 1800, 1680));
-//        primaryStage.show();
-//    }
-//
-//
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//}
 
 public class Main extends Application {
-    int characterNum;
-    String filename;
+    public int characterNum;
+    public String filename;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -71,7 +51,7 @@ public class Main extends Application {
                 characterNum =  characterNum % 3;
                 System.out.println(characterNum);
                 characterPage.repaint(characterNum);
-                gamePage.mazeController.mazeModel.playerController.playerView.init(characterNum);
+                gamePage.init(filename,characterNum);
             }
         });
 
