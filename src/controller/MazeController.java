@@ -58,7 +58,10 @@ public class MazeController {
     }
 
     public void init(String filename, String characterColor){
+        //remove all magic sticks and clocks in the mazepane(when restart)
+        mazeView.mazePane.getChildren().clear();
 
+        //create cells
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid(filename);
         mazeModel.init();
@@ -228,9 +231,11 @@ public class MazeController {
                                         ImageView starImgView = new ImageView(starImg);
                                         starImgView.setFitWidth(MazeModel.panelSize);
                                         starImgView.setFitHeight(MazeModel.panelSize);
-                                        starImgView.setTranslateX(a * MazeModel.panelSize);
-                                        starImgView.setTranslateY(b * MazeModel.panelSize);
-                                        mazeView.getChildren().add(starImgView);
+                                        starImgView.setTranslateX(0);
+                                        starImgView.setTranslateY(0);
+//                                        mazeView.getChildren().add(starImgView);
+                                        mazeModel.cellControllers[a][b].cellView.getChildren().add(starImgView);
+
                                         FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(1000), starImgView);
                                         fadeTransition1.setFromValue(0);
                                         fadeTransition1.setToValue(1);
@@ -248,9 +253,9 @@ public class MazeController {
                                         ImageView clockImgView = new ImageView(clockImg);
                                         clockImgView.setFitWidth(MazeModel.panelSize);
                                         clockImgView.setFitHeight(MazeModel.panelSize);
-                                        clockImgView.setTranslateX(a * MazeModel.panelSize);
-                                        clockImgView.setTranslateY(b * MazeModel.panelSize);
-                                        mazeView.getChildren().add(clockImgView);
+                                        clockImgView.setTranslateX(0);
+                                        clockImgView.setTranslateY(0);
+                                        mazeModel.cellControllers[a][b].cellView.getChildren().add(clockImgView);
 
                                         FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(1000),  clockImgView);
                                         fadeTransition1.setFromValue(0);

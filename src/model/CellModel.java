@@ -27,6 +27,7 @@ public class CellModel {
 
 
     public CellController cellController;
+    public boolean hasClock;
 
 
 
