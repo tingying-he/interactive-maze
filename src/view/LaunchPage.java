@@ -35,7 +35,6 @@ public class LaunchPage extends VBox {
         BackgroundImage myBI= new BackgroundImage(new Image("img/lauchpage.png",800,600,false,true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
-//then you set to your node
         this.setBackground(new Background(myBI));
 
     }
