@@ -4,6 +4,7 @@ import controller.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Timer;
 
 
 /**
@@ -20,6 +21,12 @@ public class MazeModel{
     public BadGuyController badGuyController1 = new BadGuyController(1);
     public PlayerController playerController;
     public KeyController keyController = new KeyController();
+
+    public Timer timer;
+    public int remainTime = 120;
+
+    public int bubbleNum = 0;
+    public int starNum = 0;
 
     public boolean hasKey = false;
 

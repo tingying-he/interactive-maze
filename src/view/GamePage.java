@@ -1,11 +1,20 @@
 package view;
 
 import controller.MazeController;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Tingying He on 2020/10/18.
@@ -17,10 +26,17 @@ public class GamePage extends BorderPane {
     Pane toolbarPane;
     public MazeController mazeController;
 
+    public VBox statusPane = new VBox();
+    public Label remainTimeLabel = new Label();
+
+
+
+
 
     public GamePage(String filename, String characterColor){
         this.filename = filename;
         this.characterColor = characterColor;
+        this.statusPane.getChildren().add(remainTimeLabel);
         init(filename,characterColor);
 
     }
@@ -37,5 +53,7 @@ public class GamePage extends BorderPane {
         this.setCenter(mazeController.mazeView);
 
     }
+
+
 
 }
