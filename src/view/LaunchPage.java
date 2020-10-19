@@ -2,7 +2,8 @@ package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 /**
@@ -21,16 +22,21 @@ public class LaunchPage extends VBox {
         startBtn= new Button("START");
         helpBtn = new Button("HELP");
         startBtn.setPrefSize(100,40);
-        startBtn.setTextFill(Color.WHITE);
-        startBtn.setStyle("-fx-background-color:RED");
+//        startBtn.setTextFill(Color.WHITE);
+//        startBtn.setStyle("-fx-background-color:RED");
 
         helpBtn.setPrefSize(100,40);
-        helpBtn.setTextFill(Color.WHITE);
-        helpBtn.setStyle("-fx-background-color:RED");
+//        helpBtn.setTextFill(Color.WHITE);
+//        helpBtn.setStyle("-fx-background-color:RED");
 
         this.setSpacing(15);
         this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(startBtn,helpBtn);
+        BackgroundImage myBI= new BackgroundImage(new Image("img/lauchpage.png",800,600,false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+//then you set to your node
+        this.setBackground(new Background(myBI));
 
     }
 

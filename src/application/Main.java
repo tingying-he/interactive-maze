@@ -1,5 +1,6 @@
 package application;
 
+import com.sun.javafx.css.StyleManager;
 import com.sun.javafx.logging.PlatformLogger;
 import controller.MazeController;
 import javafx.application.Application;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.MazeModel;
 import view.*;
+
 
 /**
  * @Auther: Anqi Yang
@@ -24,6 +26,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
 
         GamePage gamePage = new GamePage(filename,characterColor);
         Pane root = new Pane();
@@ -122,6 +125,7 @@ public class Main extends Application {
             }
         });
 
+        launchScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setTitle("Model - View - Controller");
 

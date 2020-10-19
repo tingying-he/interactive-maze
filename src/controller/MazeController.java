@@ -173,6 +173,7 @@ public class MazeController {
                 int a = i;
                 int b = j;
                 if (mazeModel.getMap()[i][j] == 2) {
+                    //bubble scale animation
                     ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1500), mazeModel.cellControllers[i][j].cellView);
                     scaleTransition.setFromX(0.8);
                     scaleTransition.setFromY(0.8);
@@ -193,12 +194,13 @@ public class MazeController {
                                     mazeModel.setMap(map);
                                     mazeModel.cellControllers[a][b].cellView.init(mazeModel.getMap()[a][b]);
 
+                                    //bubble burst animation
                                     Image burstImg = new Image("img/burst.png");
                                     ImageView burstImgView = new ImageView(burstImg);
-                                    burstImgView.setFitWidth(MazeModel.panelSize);
-                                    burstImgView.setFitHeight(MazeModel.panelSize);
-                                    burstImgView.setTranslateX(a * MazeModel.panelSize);
-                                    burstImgView.setTranslateY(b * MazeModel.panelSize);
+                                    burstImgView.setFitWidth(MazeModel.panelSize*1.4);
+                                    burstImgView.setFitHeight(MazeModel.panelSize*1.4);
+                                    burstImgView.setTranslateX(a * MazeModel.panelSize - MazeModel.panelSize *0.2 );
+                                    burstImgView.setTranslateY(b * MazeModel.panelSize- MazeModel.panelSize *0.2);
                                     mazeView.getChildren().add(burstImgView);
                                     FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), burstImgView);
                                     fadeTransition.setFromValue(1);
