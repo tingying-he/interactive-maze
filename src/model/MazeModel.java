@@ -23,10 +23,10 @@ public class MazeModel{
     public KeyController keyController = new KeyController();
 
     public Timer timer;
-    public int remainTime = 120;
+    public int remainTime;
 
-    public int bubbleNum = 0;
-    public int starNum = 0;
+//    public int bubbleNum = 0;
+    public int starNum;
 
     public boolean hasKey = false;
 
@@ -40,6 +40,13 @@ public class MazeModel{
         this.playerController = new PlayerController(mazeController.characterColor);
 
         loadMaze(mazeController.filename);
+        init();
+    }
+
+    public void init(){
+        remainTime = 120;
+        starNum = 0;
+        hasKey = false;
     }
 
 //    public void init(){

@@ -43,8 +43,10 @@ public class MazeController {
         mazeView = new MazeView(this);
         mazeModel = new MazeModel(this);
         mazeView  = new MazeView(this);
+        setTimer();
         init(filename,characterColor);
-
+        setBadGuyMoveTimer();
+        setKeyMoveTimer();
         mazeView.restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             restart();
         });
@@ -59,12 +61,16 @@ public class MazeController {
 
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid(filename);
+        mazeModel.init();
         setBadguy();
         setPlayer(characterColor);
         setKey();
         addKeyListener();
         addMouseEventListener();
-        setTimer();
+
+
+        mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+        mazeView.keyNumberLabel.setText("No");
     }
 
     public void createCellsGrid(String filename) {
@@ -99,7 +105,7 @@ public class MazeController {
                 }
             }
         mazeView.mazePane.getChildren().addAll( mazeModel.badGuyController0.badGuyView,mazeModel.badGuyController1.badGuyView);
-        setBadGuyMoveTimer();
+
     }
 
     public void setPlayer(String characterColor){
@@ -130,7 +136,7 @@ public class MazeController {
                 }
             }
         mazeView.mazePane.getChildren().addAll(mazeModel.keyController.keyView);
-        setKeyMoveTimer();
+
     }
 
     public void addKeyListener() {
@@ -245,10 +251,12 @@ public class MazeController {
                                         clockImgView.setTranslateX(a * MazeModel.panelSize);
                                         clockImgView.setTranslateY(b * MazeModel.panelSize);
                                         mazeView.getChildren().add(clockImgView);
+
                                         FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(1000),  clockImgView);
                                         fadeTransition1.setFromValue(0);
                                         fadeTransition1.setToValue(1);
                                         fadeTransition1.play();
+
                                         clockImgView.setOnDragDetected(new EventHandler<MouseEvent>() {
                                             @Override
                                             public void handle(MouseEvent mouseEvent) {
@@ -320,14 +328,14 @@ public class MazeController {
             System.out.println("Catch by bad guy!");
             badguyTimer.cancel();
             keyTimer.cancel();
-            lose();
+            lose("You are caught by a ghost!");
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
             badguyTimer.cancel();
             keyTimer.cancel();
-            lose();
+            lose("You are caught by a ghost!");
         }
 
     }
@@ -344,12 +352,12 @@ public class MazeController {
         }
     }
 
-    public void lose(){
+    public void lose(String whyLose){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
         alert.setTitle("GAME OVER");
         alert.setHeaderText("GAME OVER");
-        alert.setContentText("you are caught by a bad guy!");
+        alert.setContentText(whyLose);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 restart();
@@ -362,7 +370,7 @@ public class MazeController {
         mazeView.mazePane.getChildren().remove(mazeModel.badGuyController0.badGuyView);
         mazeView.mazePane.getChildren().remove(mazeModel.badGuyController1.badGuyView);
         mazeView.mazePane.getChildren().remove(mazeModel.keyController.keyView);
-        mazeModel.hasKey = false;
+        mazeModel.remainTime = 120;
         init(filename,characterColor);
     }
 
@@ -400,10 +408,12 @@ public class MazeController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
+                            mazeModel.remainTime--;
                             mazeView.remainTimeLabel.setText(mazeModel.remainTime + "s");
+
                         }
                     });
-                    mazeModel.remainTime--;
+
 
 
 
@@ -418,8 +428,7 @@ public class MazeController {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-//                                System.out.println("Time up");
-                                lose();
+                                lose("Time is up!");
                             }
                         });
                     }
