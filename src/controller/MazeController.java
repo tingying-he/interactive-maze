@@ -1,18 +1,25 @@
 package controller;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Cell;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.MazeModel;
+import view.GamePage;
 import view.MazeView;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +36,14 @@ public class MazeController {
     public Timer badguyTimer;
     public Timer keyTimer;
 
+    private RotateTransition treeRotateTransition;
+    private ArrayList<ImageView> targetList0 = new ArrayList<>();
+    private ArrayList<ImageView> targetList1 = new ArrayList<>();
+    private ArrayList<ImageView> targetList2 = new ArrayList<>();
+
+    private ArrayList<RotateTransition> targetRList0 = new ArrayList<>();
+    private ArrayList<RotateTransition> targetRList1 = new ArrayList<>();
+    private ArrayList<RotateTransition> targetRList2 = new ArrayList<>();
 
     public MazeController(String filename, int characterNum){
         this.filename = filename;
@@ -37,8 +52,6 @@ public class MazeController {
         mazeModel = new MazeModel(this);
         mazeView  = new MazeView(this);
         init(filename,characterNum);
-        addKeyListener();
-        addMouseEventListener();
     }
 
     public void init(String filename, int characterNum){
@@ -48,6 +61,8 @@ public class MazeController {
         setBadguy();
         setPlayer(characterNum);
         setKey();
+        addKeyListener();
+        addMouseEventListener();
     }
 
     public void createCellsGrid(String filename) {
@@ -57,10 +72,25 @@ public class MazeController {
                 mazeModel.cellControllers[i][j] = new CellController(mazeModel.getMap()[i][j]);
                 mazeModel.cellControllers[i][j].cellView.setTranslateX(i * MazeModel.panelSize);
                 mazeModel.cellControllers[i][j].cellView.setTranslateY(j * MazeModel.panelSize);
-
                 mazeView.getChildren().add(mazeModel.cellControllers[i][j].cellView);
 
+                if(mazeModel.getMap()[i][j] == 3) {
+                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
+                    targetList0.add(target);
+                    setDrop(target, mazeModel.getMap()[i][j]);
+                }
+                if(mazeModel.getMap()[i][j] == 4) {
+                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
+                    targetList1.add(target);
+                    setDrop(target, mazeModel.getMap()[i][j]);
+                }
+                if(mazeModel.getMap()[i][j] == 5) {
+                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
+                    targetList2.add(target);
+                    setDrop(target, mazeModel.getMap()[i][j]);
+                }
             }
+        setDrag(targetList0, targetList1, targetList2);
     }
 
     public void setBadguy(){
@@ -115,6 +145,9 @@ public class MazeController {
         setKeyMoveTimer();
     }
 
+    /**
+    * navigating the player
+    */
     public void addKeyListener() {
         mazeView.setOnMouseClicked(event -> mazeView.requestFocus());
         mazeView.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -159,6 +192,9 @@ public class MazeController {
         });
     }
 
+    /**
+    * combined clicks to remove the bush
+    */
     public void addMouseEventListener(){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -183,6 +219,9 @@ public class MazeController {
                 }
             }}
 
+    /**
+     * bad guy automatically moves every 0.5s
+     */
     public void setBadGuyMoveTimer(){
         try {
             badguyTimer = new Timer();
@@ -197,8 +236,6 @@ public class MazeController {
                             checkCollision();
                         }
                     });
-
-
                 }
             }, 0, 500);
         }catch (Exception e) {
@@ -206,6 +243,9 @@ public class MazeController {
         }
     }
 
+    /**
+     * key automatically moves every 0.5s
+     */
     public void setKeyMoveTimer(){
         try {
             keyTimer = new Timer();
@@ -219,8 +259,6 @@ public class MazeController {
                             checkGetKey();
                         }
                     });
-
-
                 }
             }, 0, 500);
         }catch (Exception e) {
@@ -228,20 +266,23 @@ public class MazeController {
         }
     }
 
+    /**
+    * check if the player got caught everytime player or bad guys move
+    */
     public void checkCollision(){
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
             System.out.println("Catch by bad guy!");
-            lose();
             badguyTimer.cancel();
             keyTimer.cancel();
+            lose();
         }
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController1.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController1.y){
             System.out.println("Catch by bad guy!");
-            lose();
             badguyTimer.cancel();
             keyTimer.cancel();
+            lose();
         }
 
     }
@@ -302,6 +343,185 @@ public class MazeController {
                 alert.show();
             }
         }
+    }
+
+
+    /**
+    * setDrag: all trees match the axe's color will shake slightly
+    */
+    public void setDrag(ArrayList targetList0, ArrayList targetList1, ArrayList targetList2) {
+        GamePage.axe0View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe0View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe0View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList0.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList0.get(i));
+                    targetRList0.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe0View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList0.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList0.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    System.out.println("drag doneeeeee");
+                }
+            }
+        });
+
+        GamePage.axe1View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe1View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe1View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList1.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList1.get(i));
+                    targetRList1.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe1View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList1.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList1.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                }
+            }
+        });
+
+        GamePage.axe2View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe2View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe2View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList2.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList2.get(i));
+                    targetRList2.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe2View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList2.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList2.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                }
+            }
+        });
+
+    }
+
+    /**
+     * setDrop: only trees that match the axe color will
+     * 1) allow drop
+     * 2) shake strongly
+     */
+    public void setDrop(ImageView target, int type) {
+        target.setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                int targetType = -1;
+                if (event.getGestureSource() == GamePage.axe0View) {
+                    targetType = 3;
+                } else if (event.getGestureSource() == GamePage.axe1View) {
+                    targetType = 4;
+                } else if (event.getGestureSource() == GamePage.axe2View) {
+                    targetType = 5;
+                }
+                if (event.getGestureSource() != target &&
+                        event.getDragboard().hasImage() &&
+                        targetType == type) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                };
+            }
+        });
+        target.setOnDragEntered(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                int targetType = -1;
+                if (event.getGestureSource() == GamePage.axe0View) {
+                    targetType = 3;
+                } else if (event.getGestureSource() == GamePage.axe1View) {
+                    targetType = 4;
+                } else if (event.getGestureSource() == GamePage.axe2View) {
+                    targetType = 5;
+                }
+                if (event.getGestureSource() != target &&
+                        event.getDragboard().hasImage() &&
+                        targetType == type) {
+//                    target.setImage(new Image("img/tool/tree1.png"));
+                    treeRotateTransition = new RotateTransition(Duration.millis(100), target);
+                    treeRotateTransition.setFromAngle(-20);
+                    treeRotateTransition.setToAngle(20);
+                    treeRotateTransition.setCycleCount(Timeline.INDEFINITE);
+                    treeRotateTransition.setAutoReverse(true);
+                    treeRotateTransition.play();
+                }
+            }
+        });
+        target.setOnDragExited(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+//                target.setImage(new Image("img/tool/tree0.png"));
+                treeRotateTransition.setFromAngle(0);
+                treeRotateTransition.setToAngle(0);
+                treeRotateTransition.stop();
+            }
+        });
+        target.setOnDragDropped(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasImage()) {
+//                    target.setImage(new Image("img/tool/tree1.png"));
+                    FadeTransition fadeTransition = new FadeTransition(Duration.millis(800), target);
+                    fadeTransition.setFromValue(1);
+                    fadeTransition.setToValue(0);
+                    fadeTransition.play();
+                    success = true;
+                    System.out.println("drag dropped");
+                }
+                /* let the source know whether the string was successfully
+                 * transferred and used */
+                event.setDropCompleted(success);
+            }
+        });
+
     }
 
 }

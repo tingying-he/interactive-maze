@@ -10,9 +10,6 @@ import javafx.scene.layout.StackPane;
  * @Description:
  */
 public class MazeView extends Pane {
-
-
-
     public MazeController mazeController;
 
 

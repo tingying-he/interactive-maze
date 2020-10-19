@@ -9,6 +9,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import model.MazeModel;
 
 /**
@@ -17,9 +19,13 @@ import model.MazeModel;
 public class CellView extends Pane {
     //    private Pane cellContent = new Pane();
     CellController cellController;
+    Image fenceImg;
+    Rectangle rec = new Rectangle(25,25);
+    public ImageView fenceImgView;
 
     public CellView(CellController cellController) {
         this.cellController = cellController;
+        this.rec.setFill(Color.WHITE);
         init(cellController.type);
     }
 
@@ -47,8 +53,30 @@ public class CellView extends Pane {
             bushImgView.setFitHeight(MazeModel.panelSize);
             this.getChildren().add(bushImgView);
 
+        } else {
+            switch (type) {
+                case 3:
+                    fenceImg = new Image("img/tool/tree0.png");
+                    fenceImgView = new ImageView(fenceImg);
+                    fenceImgView.setFitWidth(MazeModel.panelSize);
+                    fenceImgView.setFitHeight(MazeModel.panelSize);
+                    this.getChildren().add(fenceImgView);
+                    break;
+                case 4:
+                    fenceImg = new Image("img/tool/tree1.png");
+                    fenceImgView = new ImageView(fenceImg);
+                    fenceImgView.setFitWidth(MazeModel.panelSize);
+                    fenceImgView.setFitHeight(MazeModel.panelSize);
+                    this.getChildren().add(fenceImgView);
+                    break;
+                case 5:
+                    fenceImg = new Image("img/tool/tree2.png");
+                    fenceImgView = new ImageView(fenceImg);
+                    fenceImgView.setFitWidth(MazeModel.panelSize);
+                    fenceImgView.setFitHeight(MazeModel.panelSize);
+                    this.getChildren().add(fenceImgView);
+                    break;
+            }
         }
-
-
     }
 }
