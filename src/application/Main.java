@@ -5,12 +5,16 @@ import controller.MazeController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.MazeModel;
 import view.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Auther: Anqi Yang
@@ -22,13 +26,13 @@ public class Main extends Application {
     public int characterNum;
     public String filename;
 
+    public static Scene gameScene;
+
+    public static Set<KeyCode> pressedKeys = new HashSet<>();
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-        GamePage gamePage = new GamePage(filename,characterNum);
-        Pane root = new Pane();
-        root.getChildren().add(gamePage);
-        Scene gameScene = new Scene(root,800,600);
 
         //router between pages
         CharacterPage characterPage = new CharacterPage(characterNum);
@@ -52,7 +56,7 @@ public class Main extends Application {
                 characterNum =  characterNum % 3;
                 System.out.println(characterNum);
                 characterPage.repaint(characterNum);
-                gamePage.init(filename,characterNum);
+//                gamePage.init(filename,characterNum);
             }
         });
 
@@ -105,8 +109,17 @@ public class Main extends Application {
         levelPage.easyBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                GamePage gamePage = new GamePage(filename,characterNum);
+                Pane root = new Pane();
+                root.getChildren().add(gamePage);
+                gameScene = new Scene(root,800,600);
+                gameScene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
+                gameScene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+
+
                 filename = "Level 0";
                 gamePage.init(filename,characterNum);
+
                 primaryStage.setScene(gameScene);
             }
         });
@@ -114,6 +127,14 @@ public class Main extends Application {
         levelPage.hardBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                GamePage gamePage = new GamePage(filename,characterNum);
+                Pane root = new Pane();
+                root.getChildren().add(gamePage);
+                gameScene = new Scene(root,800,600);
+                gameScene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
+                gameScene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+
+
                 filename = "Level 1";
                 gamePage.init(filename,characterNum);
                 primaryStage.setScene(gameScene);

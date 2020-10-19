@@ -1,10 +1,13 @@
 package controller;
 
+import application.Main;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -16,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.MazeModel;
+import view.CellView;
 import view.GamePage;
 import view.MazeView;
 
@@ -35,6 +39,7 @@ public class MazeController {
     public MazeView mazeView;
     public Timer badguyTimer;
     public Timer keyTimer;
+    public Timer autoTimer;
 
     private RotateTransition treeRotateTransition;
     private ArrayList<ImageView> targetList0 = new ArrayList<>();
@@ -44,6 +49,8 @@ public class MazeController {
     private ArrayList<RotateTransition> targetRList0 = new ArrayList<>();
     private ArrayList<RotateTransition> targetRList1 = new ArrayList<>();
     private ArrayList<RotateTransition> targetRList2 = new ArrayList<>();
+
+    public static boolean canDraw = false;
 
     public MazeController(String filename, int characterNum){
         this.filename = filename;
@@ -63,6 +70,9 @@ public class MazeController {
         setKey();
         addKeyListener();
         addMouseEventListener();
+
+        setPen();
+        setAutoNavigate();
     }
 
     public void createCellsGrid(String filename) {
@@ -74,24 +84,30 @@ public class MazeController {
                 mazeModel.cellControllers[i][j].cellView.setTranslateY(j * MazeModel.panelSize);
                 mazeView.getChildren().add(mazeModel.cellControllers[i][j].cellView);
 
+
+
                 if(mazeModel.getMap()[i][j] == 3) {
-                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
-                    targetList0.add(target);
-                    setDrop(target, mazeModel.getMap()[i][j]);
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList0.add(targetImg);
+                    setDrop(target, i, j);
                 }
                 if(mazeModel.getMap()[i][j] == 4) {
-                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
-                    targetList1.add(target);
-                    setDrop(target, mazeModel.getMap()[i][j]);
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList1.add(targetImg);
+                    setDrop(target, i, j);
                 }
                 if(mazeModel.getMap()[i][j] == 5) {
-                    ImageView target = mazeModel.cellControllers[i][j].cellView.fenceImgView;
-                    targetList2.add(target);
-                    setDrop(target, mazeModel.getMap()[i][j]);
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList2.add(targetImg);
+                    setDrop(target, i, j);
                 }
             }
         setDrag(targetList0, targetList1, targetList2);
     }
+
 
     public void setBadguy(){
         for (int i = 0; i < mazeModel.rows; i++)
@@ -454,8 +470,13 @@ public class MazeController {
      * 1) allow drop
      * 2) shake strongly
      */
-    public void setDrop(ImageView target, int type) {
-        target.setOnDragOver(new EventHandler<DragEvent>() {
+//    public void setDrop(ImageView target, int type) {
+    public void setDrop(CellController targetCell, int i, int j) {
+        final ImageView[] target = {targetCell.cellView.fenceImgView};
+        int type = mazeModel.getMap()[i][j];
+
+
+        target[0].setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 int targetType = -1;
                 if (event.getGestureSource() == GamePage.axe0View) {
@@ -465,14 +486,14 @@ public class MazeController {
                 } else if (event.getGestureSource() == GamePage.axe2View) {
                     targetType = 5;
                 }
-                if (event.getGestureSource() != target &&
+                if (event.getGestureSource() != target[0] &&
                         event.getDragboard().hasImage() &&
                         targetType == type) {
                     event.acceptTransferModes(TransferMode.MOVE);
                 };
             }
         });
-        target.setOnDragEntered(new EventHandler<DragEvent>() {
+        target[0].setOnDragEntered(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 int targetType = -1;
                 if (event.getGestureSource() == GamePage.axe0View) {
@@ -482,11 +503,10 @@ public class MazeController {
                 } else if (event.getGestureSource() == GamePage.axe2View) {
                     targetType = 5;
                 }
-                if (event.getGestureSource() != target &&
+                if (event.getGestureSource() != target[0] &&
                         event.getDragboard().hasImage() &&
                         targetType == type) {
-//                    target.setImage(new Image("img/tool/tree1.png"));
-                    treeRotateTransition = new RotateTransition(Duration.millis(100), target);
+                    treeRotateTransition = new RotateTransition(Duration.millis(100), target[0]);
                     treeRotateTransition.setFromAngle(-20);
                     treeRotateTransition.setToAngle(20);
                     treeRotateTransition.setCycleCount(Timeline.INDEFINITE);
@@ -495,34 +515,125 @@ public class MazeController {
                 }
             }
         });
-        target.setOnDragExited(new EventHandler<DragEvent>() {
+        target[0].setOnDragExited(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-//                target.setImage(new Image("img/tool/tree0.png"));
                 treeRotateTransition.setFromAngle(0);
                 treeRotateTransition.setToAngle(0);
                 treeRotateTransition.stop();
             }
         });
-        target.setOnDragDropped(new EventHandler<DragEvent>() {
+        target[0].setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasImage()) {
-//                    target.setImage(new Image("img/tool/tree1.png"));
-                    FadeTransition fadeTransition = new FadeTransition(Duration.millis(800), target);
+                    FadeTransition fadeTransition = new FadeTransition(Duration.millis(800), target[0]);
                     fadeTransition.setFromValue(1);
                     fadeTransition.setToValue(0);
                     fadeTransition.play();
                     success = true;
-                    System.out.println("drag dropped");
+                    fadeTransition.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+
+                            targetCell.type = 1;
+                            Image whiteImg = new Image("img/white.png");
+                            target[0].setImage(whiteImg);
+                            ImageView tmp = new ImageView(whiteImg);
+                            targetCell.cellView.getChildren().add(tmp);
+
+                            int[][] map = mazeModel.getMap();
+                            map[i][j] = 1;
+                            mazeModel.setMap(map);
+
+                            System.out.println("drag dropped");
+                        }
+                    });
                 }
-                /* let the source know whether the string was successfully
-                 * transferred and used */
                 event.setDropCompleted(success);
             }
         });
-
     }
 
+    /**
+     * setPen: change the cursor view and allow drawing an auto path
+    */
+    public void setPen() {
+        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    System.out.println("click pen");
+                    Image pen = new Image("img/tool/pen.png", 40, 40, false, false);
+                    Main.gameScene.setCursor(new ImageCursor(pen));
+
+                    canDraw = true;
+                }
+            }
+        });
+    }
+
+    public void setAutoNavigate() {
+        try {
+            autoTimer = new Timer();
+            autoTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(canDraw) {
+                                System.out.println("detect path");
+                                detectPath();
+                            }
+
+                        }
+                    });
+                }
+            }, 0, 900);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void detectPath() {
+        int playerX = mazeModel.playerController.playerView.x;
+        int playerY = mazeModel.playerController.playerView.y;
+
+
+        if (playerX > 0
+            && mazeModel.cellControllers[playerX-1][playerY].type == 1
+            && mazeModel.cellControllers[playerX-1][playerY].cellView.isPath) {
+            System.out.println("left");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveLeft();
+
+        }
+        if (playerX < MazeModel.columns-1
+                && mazeModel.cellControllers[playerX+1][playerY].type == 1
+                && mazeModel.cellControllers[playerX+1][playerY].cellView.isPath) {
+            System.out.println("right");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveRight();
+
+        }
+        if (playerY>0
+                && mazeModel.cellControllers[playerX][playerY-1].type == 1
+                && mazeModel.cellControllers[playerX][playerY-1].cellView.isPath) {
+            System.out.println("up");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveUp();
+
+        }
+        if (playerY < MazeModel.rows-1
+                && mazeModel.cellControllers[playerX][playerY+1].type == 1
+                && mazeModel.cellControllers[playerX][playerY+1].cellView.isPath) {
+            System.out.println("down");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveDown();
+
+        }
+
+    }
 }
 

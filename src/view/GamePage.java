@@ -23,7 +23,7 @@ public class GamePage extends BorderPane {
     public static ImageView axe0View;
     public static ImageView axe1View;
     public static ImageView axe2View;
-    public static ImageView tree0View;
+    public static ImageView penView;
 
 
     public GamePage(String filename, int characterNum){
@@ -76,18 +76,18 @@ public class GamePage extends BorderPane {
         axe2View.setFitHeight(40);
         axe2Pane.getChildren().addAll(rec2, axe2View);
 
-        StackPane tree0Pane = new StackPane();
+        StackPane penPane = new StackPane();
         Rectangle rec3 = new Rectangle(40,40);
         rec3.setFill(Color.WHITE);
-        Image tree0 = new Image("img/tool/tree0.png");
-        tree0View = new ImageView(tree0);
-        tree0View.setFitWidth(40);
-        tree0View.setFitHeight(40);
-        tree0Pane.getChildren().addAll(rec3, tree0View);
+        Image pen = new Image("img/tool/pen.png", 40, 40, false, false);
+        penView = new ImageView(pen);
+        penView.setFitWidth(40);
+        penView.setFitHeight(40);
+        penPane.getChildren().addAll(rec3, penView);
 
 
         toolbarPane.setPadding(new Insets(20,40,20,40));
-        toolbarPane.getChildren().addAll(axe0Pane, axe1Pane, axe2Pane, tree0Pane);
+        toolbarPane.getChildren().addAll(axe0Pane, axe1Pane, axe2Pane, penPane);
     }
 
 

@@ -2,6 +2,7 @@ package view;
 
 import application.Main;
 import controller.CellController;
+import controller.MazeController;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +22,11 @@ public class CellView extends Pane {
     CellController cellController;
     Image fenceImg;
     Rectangle rec = new Rectangle(25,25);
+    public ImageView whiteImgView = new ImageView();
+
     public ImageView fenceImgView;
+
+    public boolean isPath = false;
 
     public CellView(CellController cellController) {
         this.cellController = cellController;
@@ -41,11 +46,10 @@ public class CellView extends Pane {
 
         } else if (type == 1) {
             Image whiteImg = new Image("img/white.png");
-            ImageView whiteImgView = new ImageView(whiteImg);
+            whiteImgView.setImage(whiteImg);
             whiteImgView.setFitWidth(MazeModel.panelSize);
             whiteImgView.setFitHeight(MazeModel.panelSize);
             this.getChildren().add(whiteImgView);
-
         } else if (type == 2) { //
             Image bushImg = new Image("img/bush.png");
             ImageView bushImgView = new ImageView(bushImg);
