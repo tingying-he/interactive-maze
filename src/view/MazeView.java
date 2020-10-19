@@ -45,9 +45,9 @@ public class MazeView extends BorderPane {
     public Label keyIntroLabel = new Label("Have Key");
 
     //btn
-    public Button helpBtn = new Button("Help");
-    public Button restartBtn = new Button("New Game");
-    public Button exitBtn = new Button("Exit");
+    public Button helpBtn = new Button("HELP");
+    public Button restartBtn = new Button("RESTART");
+    public Button exitBtn = new Button("EXIT");
     public VBox btnPane = new VBox();
 
 

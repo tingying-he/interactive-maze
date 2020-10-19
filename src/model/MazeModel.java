@@ -44,7 +44,7 @@ public class MazeModel{
     }
 
     public void init(){
-        remainTime = 120;
+        remainTime = 180;
         starNum = 0;
         hasKey = false;
 

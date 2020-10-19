@@ -82,19 +82,19 @@ public class Main extends Application {
             }
         });
 
-
-        launchPage.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                primaryStage.setScene(helpScene);
-            }
-        });
+//
+//        launchPage.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                primaryStage.setScene(helpScene);
+//            }
+//        });
 
 
         helpPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                primaryStage.setScene(launchScene);
+                primaryStage.setScene(gameScene);
             }
         });
 
@@ -119,6 +119,12 @@ public class Main extends Application {
                 filename = "Level 0";
                 gamePage.init(filename,characterColor);
                 primaryStage.setScene(gameScene);
+                gamePage.mazeController.mazeView.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        primaryStage.setScene(helpScene);
+                    }
+                });
             }
         });
 
@@ -128,10 +134,18 @@ public class Main extends Application {
                 filename = "Level 1";
                 gamePage.init(filename,characterColor);
                 primaryStage.setScene(gameScene);
+                gamePage.mazeController.mazeView.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        primaryStage.setScene(helpScene);
+                    }
+                });
             }
         });
 
-        launchScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+
+//        launchScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setTitle("Enchanted Woods");
 

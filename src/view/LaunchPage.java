@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 public class LaunchPage extends VBox {
 
     public Button startBtn;
-    public Button helpBtn;
+//    public Button helpBtn;
 
 
     public LaunchPage(){
@@ -20,19 +20,19 @@ public class LaunchPage extends VBox {
 
         //buttons style
         startBtn= new Button("START");
-        helpBtn = new Button("HELP");
+//        helpBtn = new Button("HELP");
         startBtn.setPrefSize(100,35);
         startBtn.setTextFill(Color.web("#0A1D10"));
         startBtn.setStyle("-fx-background-color:#FFE08A");
 
-        helpBtn.setPrefSize(100,35);
-        helpBtn.setTextFill(Color.web("#0A1D10"));
-        helpBtn.setStyle("-fx-background-color:#FFE08A");
+//        helpBtn.setPrefSize(100,35);
+//        helpBtn.setTextFill(Color.web("#0A1D10"));
+//        helpBtn.setStyle("-fx-background-color:#FFE08A");
 
         //page style
         this.setSpacing(15);
         this.setAlignment(Pos.CENTER);
-        this.getChildren().addAll(startBtn,helpBtn);
+        this.getChildren().addAll(startBtn);
 
         //background image
         BackgroundImage myBI= new BackgroundImage(new Image("img/lauchpage.png",800,600,false,true),
