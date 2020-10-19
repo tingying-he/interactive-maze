@@ -1,15 +1,21 @@
 package controller;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Cell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import model.MazeModel;
 import view.MazeView;
 
@@ -21,7 +27,7 @@ import java.util.TimerTask;
  */
 public class MazeController {
     public String filename;
-    public int characterNum;
+    public String characterColor;
 
 
     public MazeModel mazeModel ;
@@ -30,22 +36,22 @@ public class MazeController {
     public Timer keyTimer;
 
 
-    public MazeController(String filename, int characterNum){
+    public MazeController(String filename, String characterColor){
         this.filename = filename;
-        this.characterNum = characterNum;
+        this.characterColor = characterColor;
         mazeView = new MazeView(this);
         mazeModel = new MazeModel(this);
         mazeView  = new MazeView(this);
-        init(filename,characterNum);
+        init(filename,characterColor);
 
     }
 
-    public void init(String filename, int characterNum){
+    public void init(String filename, String characterColor){
 
         mazeModel.cellControllers = new CellController[mazeModel.rows][mazeModel.columns];
         createCellsGrid(filename);
         setBadguy();
-        setPlayer(characterNum);
+        setPlayer(characterColor);
         setKey();
         addKeyListener();
         addMouseEventListener();
@@ -86,11 +92,11 @@ public class MazeController {
         setBadGuyMoveTimer();
     }
 
-    public void setPlayer(int characterNum){
+    public void setPlayer(String characterColor){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
                 if(i == 0  && mazeModel.map[i][j] == 1){
-                    mazeModel.playerController.playerView.init(characterNum);
+                    mazeModel.playerController.playerView.init(characterColor);
                     mazeModel.playerController.playerView.setTranslateX(i *  MazeModel.panelSize);
                     mazeModel.playerController.playerView.setTranslateY(j *  MazeModel.panelSize);
                     mazeModel.playerController.playerView.x = i;
@@ -167,6 +173,15 @@ public class MazeController {
                 int a = i;
                 int b = j;
                 if (mazeModel.getMap()[i][j] == 2) {
+                    //bubble scale animation
+                    ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1500), mazeModel.cellControllers[i][j].cellView);
+                    scaleTransition.setFromX(0.8);
+                    scaleTransition.setFromY(0.8);
+                    scaleTransition.setToX(1);
+                    scaleTransition.setToY(1);
+                    scaleTransition.setCycleCount(Timeline.INDEFINITE);
+                    scaleTransition.setAutoReverse(true);
+                    scaleTransition.play();
                     mazeModel.cellControllers[i][j].cellView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
@@ -178,6 +193,23 @@ public class MazeController {
                                     map[a][b] = 1;
                                     mazeModel.setMap(map);
                                     mazeModel.cellControllers[a][b].cellView.init(mazeModel.getMap()[a][b]);
+
+                                    //bubble burst animation
+                                    Image burstImg = new Image("img/burst.png");
+                                    ImageView burstImgView = new ImageView(burstImg);
+                                    burstImgView.setFitWidth(MazeModel.panelSize*1.4);
+                                    burstImgView.setFitHeight(MazeModel.panelSize*1.4);
+                                    burstImgView.setTranslateX(a * MazeModel.panelSize - MazeModel.panelSize *0.2 );
+                                    burstImgView.setTranslateY(b * MazeModel.panelSize- MazeModel.panelSize *0.2);
+                                    mazeView.getChildren().add(burstImgView);
+                                    FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), burstImgView);
+                                    fadeTransition.setFromValue(1);
+                                    fadeTransition.setToValue(0);
+                                    fadeTransition.play();
+
+
+
+
                                 }
                             }
                         }
@@ -278,7 +310,7 @@ public class MazeController {
         mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
         mazeView.getChildren().remove(mazeModel.keyController.keyView);
         mazeModel.hasKey = false;
-        init(filename,characterNum);
+        init(filename,characterColor);
     }
 
     public void checkWin(){

@@ -30,7 +30,7 @@ public class MazeModel{
 
     public MazeModel(MazeController mazeController) {
         this.mazeController = mazeController;
-        this.playerController = new PlayerController(mazeController.characterNum);
+        this.playerController = new PlayerController(mazeController.characterColor);
 
         loadMaze(mazeController.filename);
     }

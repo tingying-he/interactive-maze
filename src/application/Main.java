@@ -1,5 +1,6 @@
 package application;
 
+import com.sun.javafx.css.StyleManager;
 import com.sun.javafx.logging.PlatformLogger;
 import controller.MazeController;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 import model.MazeModel;
 import view.*;
 
+
 /**
  * @Auther: Anqi Yang
  * @Date: 2020/10/03/15:50
@@ -18,21 +20,26 @@ import view.*;
  */
 
 public class Main extends Application {
-    public int characterNum;
+//    public int characterNum;
+    public String characterColor = "greenblack";
     public String filename;
+
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        GamePage gamePage = new GamePage(filename,characterNum);
+
+        GamePage gamePage = new GamePage(filename,characterColor);
         Pane root = new Pane();
         root.getChildren().add(gamePage);
         Scene gameScene = new Scene(root,800,600);
 
         //router between pages
-        CharacterPage characterPage = new CharacterPage(characterNum);
-        LevelPage levelPage = new LevelPage();
+        CharacterPage characterPage = new CharacterPage();
 
+
+        LevelPage levelPage = new LevelPage(characterColor);
         Scene levelScene = new Scene(levelPage,800,600);
 
         Scene chooseCharacterScene = new Scene(characterPage,800,600);
@@ -40,20 +47,24 @@ public class Main extends Application {
         characterPage.selectBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                characterColor = characterPage.getCharacterColor();
+                levelPage.init(characterColor);
                 primaryStage.setScene(levelScene);
+
             }
         });
 
-        characterPage.changeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                characterNum++;
-                characterNum =  characterNum % 3;
-                System.out.println(characterNum);
-                characterPage.repaint(characterNum);
-                gamePage.init(filename,characterNum);
-            }
-        });
+
+//        characterPage.changeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                characterNum++;
+//                characterNum =  characterNum % 3;
+//                System.out.println(characterNum);
+//                characterPage.repaint(characterNum);
+//                gamePage.init(filename,characterNum);
+//            }
+//        });
 
 
         HelpPage helpPage = new HelpPage();
@@ -97,7 +108,7 @@ public class Main extends Application {
         levelPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                primaryStage.setScene(launchScene);
+                primaryStage.setScene(chooseCharacterScene);
             }
         });
 
@@ -105,7 +116,7 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 0";
-                gamePage.init(filename,characterNum);
+                gamePage.init(filename,characterColor);
                 primaryStage.setScene(gameScene);
             }
         });
@@ -114,11 +125,12 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 filename = "Level 1";
-                gamePage.init(filename,characterNum);
+                gamePage.init(filename,characterColor);
                 primaryStage.setScene(gameScene);
             }
         });
 
+        launchScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setTitle("Model - View - Controller");
 

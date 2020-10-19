@@ -12,12 +12,12 @@ import java.security.PublicKey;
  * Created by Tingying He on 2020/10/17.
  */
 public class PlayerController {
-    public int characterNum;
+    public String characterColor;
     public PlayerModel playerModel;
     public PlayerView playerView;
 
-    public PlayerController(int characterNum){
-        this.characterNum = characterNum;
+    public PlayerController(String characterColor){
+        this.characterColor = characterColor;
 
         playerModel = new PlayerModel(this);
         playerView = new PlayerView(this);
