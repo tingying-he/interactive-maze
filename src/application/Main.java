@@ -133,7 +133,7 @@ public class Main extends Application {
 
         launchScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
-        primaryStage.setTitle("Model - View - Controller");
+        primaryStage.setTitle("Enchanted Woods");
 
         primaryStage.setScene(launchScene);
         primaryStage.show();
