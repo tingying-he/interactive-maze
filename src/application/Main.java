@@ -24,6 +24,8 @@ public class Main extends Application {
     public String characterColor = "greenblack";
     public String filename;
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -35,8 +37,9 @@ public class Main extends Application {
 
         //router between pages
         CharacterPage characterPage = new CharacterPage();
-        LevelPage levelPage = new LevelPage();
 
+
+        LevelPage levelPage = new LevelPage(characterColor);
         Scene levelScene = new Scene(levelPage,800,600);
 
         Scene chooseCharacterScene = new Scene(characterPage,800,600);
@@ -45,10 +48,12 @@ public class Main extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 characterColor = characterPage.getCharacterColor();
+                levelPage.init(characterColor);
                 primaryStage.setScene(levelScene);
 
             }
         });
+
 
 //        characterPage.changeBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 //            @Override
@@ -103,7 +108,7 @@ public class Main extends Application {
         levelPage.backBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                primaryStage.setScene(launchScene);
+                primaryStage.setScene(chooseCharacterScene);
             }
         });
 

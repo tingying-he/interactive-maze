@@ -18,20 +18,23 @@ public class LaunchPage extends VBox {
     public LaunchPage(){
 
 
-        //buttons
+        //buttons style
         startBtn= new Button("START");
         helpBtn = new Button("HELP");
-        startBtn.setPrefSize(100,40);
-//        startBtn.setTextFill(Color.WHITE);
-//        startBtn.setStyle("-fx-background-color:RED");
+        startBtn.setPrefSize(100,35);
+        startBtn.setTextFill(Color.web("#0A1D10"));
+        startBtn.setStyle("-fx-background-color:#FFE08A");
 
-        helpBtn.setPrefSize(100,40);
-//        helpBtn.setTextFill(Color.WHITE);
-//        helpBtn.setStyle("-fx-background-color:RED");
+        helpBtn.setPrefSize(100,35);
+        helpBtn.setTextFill(Color.web("#0A1D10"));
+        helpBtn.setStyle("-fx-background-color:#FFE08A");
 
+        //page style
         this.setSpacing(15);
         this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(startBtn,helpBtn);
+
+        //background image
         BackgroundImage myBI= new BackgroundImage(new Image("img/lauchpage.png",800,600,false,true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);

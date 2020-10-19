@@ -8,15 +8,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -25,6 +28,7 @@ import javafx.util.Duration;
 public class CharacterPage extends BorderPane {
 
 
+    //character color
     public String characterColor = "greenblack";
     public String eyeColor = "green";
     public String bodyColor = "black";
@@ -35,37 +39,35 @@ public class CharacterPage extends BorderPane {
     public HBox btnBox = new HBox();
 
     //eye color pane
-//    public GridPane settingPane = new GridPane();
     public VBox eyePane = new VBox();
 
     //body color pane
     public VBox bodyPane = new VBox();
-
-//    public ImageView characterImgView;
-//    public PlayerController playerController;
-
-
 
 
     public CharacterPage(){
         this.setRight(eyePane);
         this.setLeft(bodyPane);
         this.setBottom(btnBox);
-        repaint(eyeColor,bodyColor);
+        putCharacter(eyeColor,bodyColor);
 
-        selectBtn = new Button("SELECT");
-        selectBtn.setPrefSize(100,40);
-        selectBtn.setStyle("-fx-background-color:#FFBF00");
-        selectBtn.setTextFill(Color.BLACK);
+        //button style
+        selectBtn = new Button("OK");
+        selectBtn.setPrefSize(100,35);
+        selectBtn.setStyle("-fx-background-color:#FFE08A");
+        selectBtn.setTextFill(Color.web("#0A1D10"));
+
         backBtn = new Button("BACK");
-        backBtn.setPrefSize(100,40);
-        backBtn.setStyle("-fx-background-color:#FFBF00");
-        backBtn.setTextFill(Color.BLACK);
-        btnBox.getChildren().addAll(selectBtn, backBtn);
+        backBtn.setPrefSize(100,35);
+        backBtn.setStyle("-fx-background-color:#F5EAE4");
+        backBtn.setTextFill(Color.web("#0A1D10"));
+
+        btnBox.getChildren().addAll(backBtn,selectBtn);
         btnBox.setAlignment(Pos.CENTER);
-        btnBox.setSpacing(10);
+        btnBox.setSpacing(20);
 
 
+        //eye color pane
         Image eyeyellowImg = new Image("img/eyeyellow.png");
         ImageView eyeyellowImgView = new ImageView(eyeyellowImg);
         eyeyellowImgView.setFitHeight(100);
@@ -74,7 +76,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 eyeColor = "yellow";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -88,7 +90,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 eyeColor = "green";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -101,7 +103,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 eyeColor = "blue";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -110,6 +112,7 @@ public class CharacterPage extends BorderPane {
         eyePane.setSpacing(10);
         eyePane.setPadding(new Insets(50,0,0,0));
 
+        //body color pane
         Image bodywhiteImg = new Image("img/bodywhite.png");
         ImageView bodywhiteImgView = new ImageView(bodywhiteImg);
         bodywhiteImgView.setFitHeight(100);
@@ -118,7 +121,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 bodyColor = "white";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -132,7 +135,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 bodyColor = "black";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -145,7 +148,7 @@ public class CharacterPage extends BorderPane {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 bodyColor = "orange";
-                repaint(eyeColor,bodyColor);
+                putCharacter(eyeColor,bodyColor);
                 setCharacterColor(eyeColor,bodyColor);
             }
         });
@@ -153,24 +156,28 @@ public class CharacterPage extends BorderPane {
         bodyPane.getChildren().addAll(bodywhiteImgView,bodyblackImgView,bodyorangeImgView);
         bodyPane.setSpacing(20);
         bodyPane.setPadding(new Insets(50,0,0,0));
+
+        //character pane
         this.setPadding(new Insets(80,100,30,100));
 
-        BackgroundImage myBI= new BackgroundImage(new Image("img/characterpage.png",800,600,false,true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+        Image backgroundImg = new Image("img/characterpage.png");
+
+        BackgroundImage myBI= new BackgroundImage(backgroundImg,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(myBI));
 
+
+
+
     }
 
-    public void repaint(String eyeColor,String bodyColor){
+    public void putCharacter(String eyeColor,String bodyColor){
         Image characterImg = new Image("img/character"+eyeColor+bodyColor+".png");
         ImageView characterImgView = new ImageView(characterImg);
         characterImgView.setFitHeight(240);
         characterImgView.setFitWidth(240);
-
-
         this.setCenter(characterImgView);
-
     }
 
     public void setCharacterColor(String eyeColor, String bodyColor){
