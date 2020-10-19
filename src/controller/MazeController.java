@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.MazeModel;
 import view.MazeView;
@@ -44,6 +45,14 @@ public class MazeController {
         mazeView  = new MazeView(this);
         init(filename,characterColor);
 
+        mazeView.restartBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            restart();
+        });
+        mazeView.exitBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
     }
 
     public void init(String filename, String characterColor){
@@ -55,6 +64,7 @@ public class MazeController {
         setKey();
         addKeyListener();
         addMouseEventListener();
+        setTimer();
     }
 
     public void createCellsGrid(String filename) {
@@ -65,7 +75,7 @@ public class MazeController {
                 mazeModel.cellControllers[i][j].cellView.setTranslateX(i * MazeModel.panelSize);
                 mazeModel.cellControllers[i][j].cellView.setTranslateY(j * MazeModel.panelSize);
 
-                mazeView.getChildren().add(mazeModel.cellControllers[i][j].cellView);
+                mazeView.mazePane.getChildren().add(mazeModel.cellControllers[i][j].cellView);
 
             }
     }
@@ -88,7 +98,7 @@ public class MazeController {
                     mazeModel.badGuyController1.badGuyView.toFront();
                 }
             }
-        mazeView.getChildren().addAll( mazeModel.badGuyController0.badGuyView,mazeModel.badGuyController1.badGuyView);
+        mazeView.mazePane.getChildren().addAll( mazeModel.badGuyController0.badGuyView,mazeModel.badGuyController1.badGuyView);
         setBadGuyMoveTimer();
     }
 
@@ -104,7 +114,7 @@ public class MazeController {
                 }
             }
         mazeModel.playerController.playerView.toFront();
-        mazeView.getChildren().addAll( mazeModel.playerController.playerView);
+        mazeView.mazePane.getChildren().addAll( mazeModel.playerController.playerView);
     }
 
     public void setKey(){
@@ -119,7 +129,7 @@ public class MazeController {
                     mazeModel.keyController.keyView.setVisible(true);
                 }
             }
-        mazeView.getChildren().addAll(mazeModel.keyController.keyView);
+        mazeView.mazePane.getChildren().addAll(mazeModel.keyController.keyView);
         setKeyMoveTimer();
     }
 
@@ -207,13 +217,55 @@ public class MazeController {
                                     fadeTransition.setToValue(0);
                                     fadeTransition.play();
 
-
+                                    if(Math.random()<0.33) {
+                                        Image starImg = new Image("img/star.png");
+                                        ImageView starImgView = new ImageView(starImg);
+                                        starImgView.setFitWidth(MazeModel.panelSize);
+                                        starImgView.setFitHeight(MazeModel.panelSize);
+                                        starImgView.setTranslateX(a * MazeModel.panelSize);
+                                        starImgView.setTranslateY(b * MazeModel.panelSize);
+                                        mazeView.getChildren().add(starImgView);
+                                        FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(1000), starImgView);
+                                        fadeTransition1.setFromValue(0);
+                                        fadeTransition1.setToValue(1);
+                                        fadeTransition1.play();
+                                        starImgView.setOnDragDetected(new EventHandler<MouseEvent>() {
+                                            @Override
+                                            public void handle(MouseEvent mouseEvent) {
+                                                mazeModel.starNum++;
+                                                mazeView.starNumberLabel.setText(mazeModel.starNum + "");
+                                                starImgView.setVisible(false);
+                                            }
+                                        });
+                                    }else{
+                                        Image clockImg = new Image("img/clock.png");
+                                        ImageView clockImgView = new ImageView(clockImg);
+                                        clockImgView.setFitWidth(MazeModel.panelSize);
+                                        clockImgView.setFitHeight(MazeModel.panelSize);
+                                        clockImgView.setTranslateX(a * MazeModel.panelSize);
+                                        clockImgView.setTranslateY(b * MazeModel.panelSize);
+                                        mazeView.getChildren().add(clockImgView);
+                                        FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(1000),  clockImgView);
+                                        fadeTransition1.setFromValue(0);
+                                        fadeTransition1.setToValue(1);
+                                        fadeTransition1.play();
+                                        clockImgView.setOnDragDetected(new EventHandler<MouseEvent>() {
+                                            @Override
+                                            public void handle(MouseEvent mouseEvent) {
+                                                mazeModel.remainTime= mazeModel.remainTime + 15;
+                                                mazeView.remainTimeLabel.setText(mazeModel.remainTime+"s");
+                                                clockImgView.setVisible(false);
+                                            }
+                                        });
+                                    }
 
 
                                 }
                             }
                         }
                     });
+
+
                 }
             }}
 
@@ -287,6 +339,7 @@ public class MazeController {
                 mazeModel.hasKey = true;
                 System.out.println("you get key");
                 mazeModel.keyController.keyView.setVisible(false);
+                mazeView.keyNumberLabel.setText("Yes!");
             }
         }
     }
@@ -305,10 +358,10 @@ public class MazeController {
     }
 
     public void restart(){
-        mazeView.getChildren().remove(mazeModel.playerController.playerView);
-        mazeView.getChildren().remove(mazeModel.badGuyController0.badGuyView);
-        mazeView.getChildren().remove(mazeModel.badGuyController1.badGuyView);
-        mazeView.getChildren().remove(mazeModel.keyController.keyView);
+        mazeView.mazePane.getChildren().remove(mazeModel.playerController.playerView);
+        mazeView.mazePane.getChildren().remove(mazeModel.badGuyController0.badGuyView);
+        mazeView.mazePane.getChildren().remove(mazeModel.badGuyController1.badGuyView);
+        mazeView.mazePane.getChildren().remove(mazeModel.keyController.keyView);
         mazeModel.hasKey = false;
         init(filename,characterColor);
     }
@@ -335,6 +388,45 @@ public class MazeController {
                 alert.setContentText("You cannot go out of maze without a key!Try to get it!");
                 alert.show();
             }
+        }
+    }
+
+    public void setTimer() {
+        try {
+            mazeModel.timer = new Timer();
+            mazeModel.timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            mazeView.remainTimeLabel.setText(mazeModel.remainTime + "s");
+                        }
+                    });
+                    mazeModel.remainTime--;
+
+
+
+                    if(mazeModel.remainTime < 30){
+
+                        mazeView.remainTimeLabel.setTextFill(Color.YELLOW);
+
+                    }else{
+                        mazeView.remainTimeLabel.setTextFill(Color.WHITE);
+                    }
+                    if (mazeModel.remainTime == 0) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+//                                System.out.println("Time up");
+                                lose();
+                            }
+                        });
+                    }
+                }
+            }, 0, 1000);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
