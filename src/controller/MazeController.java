@@ -205,7 +205,6 @@ public class MazeController {
                                     FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), burstImgView);
                                     fadeTransition.setFromValue(1);
                                     fadeTransition.setToValue(0);
-//                                fadeTransition.setAutoReverse(true);
                                     fadeTransition.play();
 
 

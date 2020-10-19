@@ -21,7 +21,7 @@ import view.*;
 
 public class Main extends Application {
 //    public int characterNum;
-    public String characterColor = "yellowblack";
+    public String characterColor = "yellowwhite";
     public String filename;
 
     @Override
