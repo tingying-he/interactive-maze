@@ -1,25 +1,28 @@
 package controller;
 
+import application.Main;
 import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Cell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.MazeModel;
+import view.GamePage;
 import view.MazeView;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,7 +38,18 @@ public class MazeController {
     public MazeView mazeView;
     public Timer badguyTimer;
     public Timer keyTimer;
+    public Timer autoTimer;
 
+    private RotateTransition treeRotateTransition;
+    private ArrayList<ImageView> targetList0 = new ArrayList<>();
+    private ArrayList<ImageView> targetList1 = new ArrayList<>();
+    private ArrayList<ImageView> targetList2 = new ArrayList<>();
+
+    private ArrayList<RotateTransition> targetRList0 = new ArrayList<>();
+    private ArrayList<RotateTransition> targetRList1 = new ArrayList<>();
+    private ArrayList<RotateTransition> targetRList2 = new ArrayList<>();
+
+    public static boolean canDraw = false;
 
     public MazeController(String filename, String characterColor){
         this.filename = filename;
@@ -71,6 +85,8 @@ public class MazeController {
         addKeyListener();
         addMouseEventListener();
 
+        setPen();
+        setAutoNavigate();
 
         mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
         mazeView.keyNumberLabel.setText("No");
@@ -86,7 +102,26 @@ public class MazeController {
 
                 mazeView.mazePane.getChildren().add(mazeModel.cellControllers[i][j].cellView);
 
+                if(mazeModel.getMap()[i][j] == 3) {
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList0.add(targetImg);
+                    setDrop(target, i, j);
+                }
+                if(mazeModel.getMap()[i][j] == 4) {
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList1.add(targetImg);
+                    setDrop(target, i, j);
+                }
+                if(mazeModel.getMap()[i][j] == 5) {
+                    CellController target = mazeModel.cellControllers[i][j];
+                    ImageView targetImg = target.cellView.fenceImgView;
+                    targetList2.add(targetImg);
+                    setDrop(target, i, j);
+                }
             }
+        setDrag(targetList0, targetList1, targetList2);
     }
 
     public void setBadguy(){
@@ -142,6 +177,9 @@ public class MazeController {
 
     }
 
+    /**
+     * navigating the player
+     */
     public void addKeyListener() {
         mazeView.setOnMouseClicked(event -> mazeView.requestFocus());
         mazeView.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -186,6 +224,9 @@ public class MazeController {
         });
     }
 
+    /**
+     * combined clicks to remove the bush
+     */
     public void addMouseEventListener(){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -282,6 +323,9 @@ public class MazeController {
                 }
             }}
 
+    /**
+     * bad guy automatically moves every 0.5s
+     */
     public void setBadGuyMoveTimer(){
         try {
             badguyTimer = new Timer();
@@ -305,6 +349,9 @@ public class MazeController {
         }
     }
 
+    /**
+     * key automatically moves every 0.5s
+     */
     public void setKeyMoveTimer(){
         try {
             keyTimer = new Timer();
@@ -327,6 +374,9 @@ public class MazeController {
         }
     }
 
+    /**
+     * check if the player got caught everytime player or bad guys move
+     */
     public void checkCollision(){
         if( mazeModel.playerController.playerView.x ==  mazeModel.badGuyController0.x
                 &&  mazeModel.playerController.playerView.y ==  mazeModel.badGuyController0.y){
@@ -370,6 +420,9 @@ public class MazeController {
         });
     }
 
+    /**
+     * restart the game
+     */
     public void restart(){
         mazeView.mazePane.getChildren().remove(mazeModel.playerController.playerView);
         mazeView.mazePane.getChildren().remove(mazeModel.badGuyController0.badGuyView);
@@ -404,6 +457,9 @@ public class MazeController {
         }
     }
 
+    /**
+     * Timer tool
+     */
     public void setTimer() {
         try {
             mazeModel.timer = new Timer();
@@ -418,10 +474,6 @@ public class MazeController {
 
                         }
                     });
-
-
-
-
                     if(mazeModel.remainTime < 30){
 
                         mazeView.remainTimeLabel.setTextFill(Color.YELLOW);
@@ -442,6 +494,280 @@ public class MazeController {
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * setDrag: all trees match the axe's color will shake slightly
+     */
+    public void setDrag(ArrayList targetList0, ArrayList targetList1, ArrayList targetList2) {
+        GamePage.axe0View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe0View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe0View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList0.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList0.get(i));
+                    targetRList0.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe0View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList0.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList0.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    System.out.println("drag doneeeeee");
+                }
+            }
+        });
+
+        GamePage.axe1View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe1View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe1View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList1.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList1.get(i));
+                    targetRList1.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe1View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList1.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList1.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                }
+            }
+        });
+
+        GamePage.axe2View.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                Dragboard db = GamePage.axe2View.startDragAndDrop(TransferMode.ANY);
+
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(GamePage.axe2View.getImage());
+                db.setContent(content);
+
+                for(int i=0; i<targetList2.size(); i++) {
+                    RotateTransition treeRotate0 = new RotateTransition(Duration.millis(100), (ImageView) targetList2.get(i));
+                    targetRList2.add(treeRotate0);
+                    treeRotate0.setFromAngle(-5);
+                    treeRotate0.setToAngle(5);
+                    treeRotate0.setCycleCount(Timeline.INDEFINITE);
+                    treeRotate0.setAutoReverse(true);
+                    treeRotate0.play();
+                }
+            }
+        });
+        GamePage.axe2View.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                for(int i=0; i<targetRList2.size(); i++) {
+                    RotateTransition rotate = (RotateTransition) targetRList2.get(i);
+                    rotate.setFromAngle(0);
+                    rotate.setToAngle(0);
+                    rotate.stop();
+                }
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                }
+            }
+        });
+
+    }
+
+    /**
+     * setDrop: only trees that match the axe color will
+     * 1) allow drop
+     * 2) shake strongly
+     */
+    public void setDrop(CellController targetCell, int i, int j) {
+        final ImageView[] target = {targetCell.cellView.fenceImgView};
+        int type = mazeModel.getMap()[i][j];
+
+
+        target[0].setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                int targetType = -1;
+                if (event.getGestureSource() == GamePage.axe0View) {
+                    targetType = 3;
+                } else if (event.getGestureSource() == GamePage.axe1View) {
+                    targetType = 4;
+                } else if (event.getGestureSource() == GamePage.axe2View) {
+                    targetType = 5;
+                }
+                if (event.getGestureSource() != target[0] &&
+                        event.getDragboard().hasImage() &&
+                        targetType == type) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                };
+            }
+        });
+        target[0].setOnDragEntered(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                int targetType = -1;
+                if (event.getGestureSource() == GamePage.axe0View) {
+                    targetType = 3;
+                } else if (event.getGestureSource() == GamePage.axe1View) {
+                    targetType = 4;
+                } else if (event.getGestureSource() == GamePage.axe2View) {
+                    targetType = 5;
+                }
+                if (event.getGestureSource() != target[0] &&
+                        event.getDragboard().hasImage() &&
+                        targetType == type) {
+                    treeRotateTransition = new RotateTransition(Duration.millis(100), target[0]);
+                    treeRotateTransition.setFromAngle(-20);
+                    treeRotateTransition.setToAngle(20);
+                    treeRotateTransition.setCycleCount(Timeline.INDEFINITE);
+                    treeRotateTransition.setAutoReverse(true);
+                    treeRotateTransition.play();
+                }
+            }
+        });
+        target[0].setOnDragExited(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                treeRotateTransition.setFromAngle(0);
+                treeRotateTransition.setToAngle(0);
+                treeRotateTransition.stop();
+            }
+        });
+        target[0].setOnDragDropped(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasImage()) {
+                    FadeTransition fadeTransition = new FadeTransition(Duration.millis(800), target[0]);
+                    fadeTransition.setFromValue(1);
+                    fadeTransition.setToValue(0);
+                    fadeTransition.play();
+                    success = true;
+                    System.out.println("drag dropped");
+                    fadeTransition.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+
+                            targetCell.type = 1;
+                            Image whiteImg = new Image("img/white.png");
+                            target[0].setImage(whiteImg);
+                            ImageView tmp = new ImageView(whiteImg);
+                            targetCell.cellView.getChildren().add(tmp);
+
+                            int[][] map = mazeModel.getMap();
+                            map[i][j] = 1;
+                            mazeModel.setMap(map);
+
+                            System.out.println("drag dropped");
+                        }
+                    });
+                }
+                event.setDropCompleted(success);
+            }
+        });
+    }
+
+    /**
+     * setPen: change the cursor view and allow drawing an auto path
+     */
+    public void setPen() {
+        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    System.out.println("click pen");
+                    Image pen = new Image("img/star.png", 40, 40, false, false);
+                    Main.gameScene.setCursor(new ImageCursor(pen));
+
+                    canDraw = true;
+                }
+            }
+        });
+    }
+
+    public void setAutoNavigate() {
+        try {
+            autoTimer = new Timer();
+            autoTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(canDraw) {
+                                System.out.println("detect path");
+                                detectPath();
+                            }
+
+                        }
+                    });
+                }
+            }, 0, 900);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void detectPath() {
+        int playerX = mazeModel.playerController.playerView.x;
+        int playerY = mazeModel.playerController.playerView.y;
+
+
+        if (playerX > 0
+                && mazeModel.cellControllers[playerX-1][playerY].type == 1
+                && mazeModel.cellControllers[playerX-1][playerY].cellView.isPath) {
+            System.out.println("left");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveLeft();
+
+        }
+        if (playerX < MazeModel.columns-1
+                && mazeModel.cellControllers[playerX+1][playerY].type == 1
+                && mazeModel.cellControllers[playerX+1][playerY].cellView.isPath) {
+            System.out.println("right");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveRight();
+
+        }
+        if (playerY>0
+                && mazeModel.cellControllers[playerX][playerY-1].type == 1
+                && mazeModel.cellControllers[playerX][playerY-1].cellView.isPath) {
+            System.out.println("up");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveUp();
+
+        }
+        if (playerY < MazeModel.rows-1
+                && mazeModel.cellControllers[playerX][playerY+1].type == 1
+                && mazeModel.cellControllers[playerX][playerY+1].cellView.isPath) {
+            System.out.println("down");
+            mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.playerController.playerView.moveDown();
+
+        }
+
     }
 
 }
