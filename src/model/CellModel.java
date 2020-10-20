@@ -15,27 +15,14 @@ import view.MazeView;
  */
 public class CellModel {
 
-    //ImgURL
-    public static final String wallImgURL = "img/wall.png";
-    public static final String whiteImgURL = "img/white.png";
-    public static final String bushImgURL = "img/bush.png";
-
-//    public int type;
-//    public int x;
-//    public int y;
-
-
 
     public CellController cellController;
-    public boolean hasClock;
 
 
 
     public CellModel(CellController cellController){
         this.cellController = cellController;
-//        this.type =type;
-//        this.x = x;
-//        this.y = y;
+
     }
 
 

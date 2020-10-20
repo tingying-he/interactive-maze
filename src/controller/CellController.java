@@ -61,7 +61,7 @@ public class CellController {
                     if (mouseEvent.isShiftDown()
                             && Main.pressedKeys.contains(KeyCode.D)
                             && MazeController.canDraw) {
-                        System.out.println("zhu zhu huahua");
+//                        System.out.println("zhu zhu huahua");
                         cellView.isPath = true;
                         if (changeInX > 0) {
                             System.out.println("moving right");

@@ -97,6 +97,9 @@ public class MazeController {
         mazeView.keyNumberLabel.setText("No");
     }
 
+    /**
+     * Create the maze pane
+     */
     public void createCellsGrid(String filename) {
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -128,7 +131,9 @@ public class MazeController {
             }
         setDrag(targetList0, targetList1, targetList2);
     }
-
+    /**
+     * Put bad guy into maze pane
+     */
     public void setBadguy(){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -151,6 +156,9 @@ public class MazeController {
 
     }
 
+    /**
+     * Put player into maze pane
+     */
     public void setPlayer(String characterColor){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -166,6 +174,9 @@ public class MazeController {
         mazeView.mazePane.getChildren().addAll( mazeModel.playerController.playerView);
     }
 
+    /**
+     * Put key into maze pane
+     */
     public void setKey(){
         for (int i = 0; i < mazeModel.rows; i++)
             for (int j = 0; j < mazeModel.columns; j++) {
@@ -404,6 +415,9 @@ public class MazeController {
 
     }
 
+    /**
+     * check if the player got the key
+     */
     public void checkGetKey(){
         if(!mazeModel.hasKey) {
             if (mazeModel.playerController.playerView.x == mazeModel.keyController.x
@@ -416,6 +430,9 @@ public class MazeController {
         }
     }
 
+    /**
+     * lose the game
+     */
     public void lose(String whyLose){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Restart");
@@ -441,6 +458,9 @@ public class MazeController {
         init(filename,characterColor);
     }
 
+    /**
+     * check if the player win the game
+     */
     public void checkWin(){
 
         if(mazeModel.playerController.playerView.x == MazeModel.columns - 1){

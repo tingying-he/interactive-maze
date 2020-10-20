@@ -25,7 +25,6 @@ import java.util.TimerTask;
 public class BadGuyController {
     public BadGuyModel badGuyModel;
     public BadGuyView badGuyView;
-    Timer timer;
     public int x, y;
     public int badguyNum;
 
@@ -36,6 +35,9 @@ public class BadGuyController {
         badGuyView = new BadGuyView(this,badguyNum);
     }
 
+    /**
+     * Make bad guy randomly move to four directions
+     */
     public void randomMove(){
         if(Math.random()<0.25){
             moveDown();
@@ -80,16 +82,4 @@ public class BadGuyController {
         }
     }
 
-
-
-
-    public void checkCollision(int playerX, int playerY, int x, int y){
-
-        if (
-                playerX == x && playerY == y
-        ) {
-            System.out.println("catch by bad guy!");
-        }
-
-    }
 }

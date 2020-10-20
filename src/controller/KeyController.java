@@ -14,7 +14,6 @@ import java.util.Timer;
 public class KeyController {
     public KeyModel keyModel;
     public KeyView keyView;
-    Timer timer;
     public int x, y;
 
 
@@ -22,7 +21,9 @@ public class KeyController {
         keyModel = new KeyModel(this);
         keyView = new KeyView(this);
     }
-
+    /**
+     * Make key randomly move to four directions
+     */
     public void randomMove(){
         if(Math.random()<0.25){
             moveDown();

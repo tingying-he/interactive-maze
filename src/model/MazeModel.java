@@ -51,9 +51,6 @@ public class MazeModel{
 
     }
 
-//    public void init(){
-//
-//    }
 
     public void loadMaze(String filename) {
         try{
