@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -50,6 +51,8 @@ public class MazeController {
     private ArrayList<RotateTransition> targetRList2 = new ArrayList<>();
 
     public static boolean canDraw = false;
+    public static Timer myTimer;
+    public int time = 8 ;
 
     public MazeController(String filename, String characterColor){
         this.filename = filename;
@@ -86,7 +89,7 @@ public class MazeController {
         addMouseEventListener();
 
         setPen();
-        setAutoNavigate();
+//        setAutoNavigate();
 
         mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
         mazeView.keyNumberLabel.setText("No");
@@ -693,19 +696,51 @@ public class MazeController {
      * setPen: change the cursor view and allow drawing an auto path
      */
     public void setPen() {
-        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        mazeView.starIconImgView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+//                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mazeModel.starNum > 0 && mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     System.out.println("click pen");
                     Image pen = new Image("img/star.png", 40, 40, false, false);
                     Main.gameScene.setCursor(new ImageCursor(pen));
 
                     canDraw = true;
+                    mazeModel.starNum--;
+                    mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+                    setTimerStart();
                 }
             }
         });
     }
+
+    public void setTimerStart() {
+        if (canDraw == true) {
+            myTimer = new Timer();
+            myTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (canDraw == true && time > 0) {
+                        Platform.runLater(() -> {
+                            time--;
+                            System.out.println("time is " + time);
+                        });
+                    } else if (canDraw == true && time == 0) {
+                        setAutoNavigate();
+                        canDraw = false;
+                        time = 8;
+                        Main.gameScene.setCursor(Cursor.DEFAULT);
+                        System.out.println("timer endssss");
+                        myTimer.cancel();
+                    }
+                    System.gc();
+                }
+            }, 0, 1000);
+        }
+
+    }
+
 
     public void setAutoNavigate() {
         try {
@@ -716,11 +751,8 @@ public class MazeController {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            if(canDraw) {
-                                System.out.println("detect path");
-                                detectPath();
-                            }
-
+                            System.out.println("detect path");
+                            detectPath();
                         }
                     });
                 }
@@ -735,11 +767,20 @@ public class MazeController {
         int playerY = mazeModel.playerController.playerView.y;
 
 
+        if (playerX > 0 && playerX < MazeModel.columns-1 && playerY>0 && playerY < MazeModel.rows-1
+                && !mazeModel.cellControllers[playerX-1][playerY].cellView.isPath
+                && !mazeModel.cellControllers[playerX+1][playerY].cellView.isPath
+                && !mazeModel.cellControllers[playerX][playerY-1].cellView.isPath
+                && !mazeModel.cellControllers[playerX][playerY+1].cellView.isPath) {
+            System.out.println("cancel detect");
+            autoTimer.cancel();
+        }
         if (playerX > 0
                 && mazeModel.cellControllers[playerX-1][playerY].type == 1
                 && mazeModel.cellControllers[playerX-1][playerY].cellView.isPath) {
             System.out.println("left");
             mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.cellControllers[playerX-1][playerY].cellView.isPath = false;
             mazeModel.playerController.playerView.moveLeft();
 
         }
@@ -748,6 +789,7 @@ public class MazeController {
                 && mazeModel.cellControllers[playerX+1][playerY].cellView.isPath) {
             System.out.println("right");
             mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.cellControllers[playerX+1][playerY].cellView.isPath = false;
             mazeModel.playerController.playerView.moveRight();
 
         }
@@ -756,6 +798,7 @@ public class MazeController {
                 && mazeModel.cellControllers[playerX][playerY-1].cellView.isPath) {
             System.out.println("up");
             mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.cellControllers[playerX][playerY-1].cellView.isPath = false;
             mazeModel.playerController.playerView.moveUp();
 
         }
@@ -764,11 +807,10 @@ public class MazeController {
                 && mazeModel.cellControllers[playerX][playerY+1].cellView.isPath) {
             System.out.println("down");
             mazeModel.cellControllers[playerX][playerY].type = 0;
+            mazeModel.cellControllers[playerX][playerY+1].cellView.isPath = false;
             mazeModel.playerController.playerView.moveDown();
 
         }
-
     }
-
 }
 
