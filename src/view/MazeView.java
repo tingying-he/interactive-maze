@@ -35,13 +35,6 @@ public class MazeView extends BorderPane {
     public ImageView clockIconImgView = new ImageView(clockIconImg);
     public Label clockIntroLabel = new Label("Remaining Time");
 
-    //star status pane
-    private AnchorPane starPane = new AnchorPane();
-    public Label starNumberLabel = new Label("0");
-    Image starIconImg = new Image("img/star.png");
-    public ImageView starIconImgView = new ImageView(starIconImg);
-    public Label starIntroLabel = new Label("Magic Sticks");
-
 
     //key pane
     private AnchorPane keyPane = new AnchorPane();
@@ -60,15 +53,16 @@ public class MazeView extends BorderPane {
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
         this.setFocusTraversable(true);
-//        this.setStyle("-fx-background-color:#4D5156");
-        this.setStyle("-fx-background-color:#292b2a");
+        this.setStyle("-fx-background-color:#4D5156");
+//        this.setStyle("-fx-background-color:#292b2a");
 
         this.setCenter(mazePane);
         this.setRight(statusPane);
         statusPane.setPadding(new Insets(20,20,20,20));
 
         //status pane
-        statusPane.getChildren().addAll(keyPane,timePane,starPane,btnPane);
+        statusPane.getChildren().addAll(keyPane,timePane,btnPane);
+//        statusPane.getChildren().addAll(keyPane,timePane,starPane,btnPane);
         statusPane.setSpacing(3);
         //timePane
         clockIntroLabel.setLayoutX(80);
@@ -86,23 +80,6 @@ public class MazeView extends BorderPane {
         clockIconImgView.setY(10);
 
         timePane.getChildren().addAll(remainTimeLabel,clockIconImgView,clockIntroLabel);
-
-        //starPane for magic stick
-        starIntroLabel.setLayoutX(80);
-        starIntroLabel.setLayoutY(10);
-        starIntroLabel.setTextFill(Color.WHITE);
-        //star pane text
-        starNumberLabel.setFont(new Font("Arial", 30));
-        starNumberLabel.setLayoutX(80);
-        starNumberLabel.setLayoutY(30);
-        starNumberLabel.setTextFill(Color.WHITE);
-        //star pane animation
-        starIconImgView.setFitHeight(50);
-        starIconImgView.setFitWidth(50);
-        starIconImgView.setX(10);
-        starIconImgView.setY(10);
-
-        starPane.getChildren().addAll(starIntroLabel,starNumberLabel,starIconImgView);
 
         //keyPane
         keyIntroLabel.setLayoutX(80);
