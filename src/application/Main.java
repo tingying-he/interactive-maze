@@ -118,7 +118,7 @@ public class Main extends Application {
 
                 filename = "Level 0";
                 gamePage.init(filename,characterColor);
-                primaryStage.setScene(gameScene);
+                primaryStage.setScene(helpScene);
                 gamePage.mazeController.mazeView.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
@@ -141,7 +141,7 @@ public class Main extends Application {
 
                 filename = "Level 1";
                 gamePage.init(filename,characterColor);
-                primaryStage.setScene(gameScene);
+                primaryStage.setScene(helpScene);
                 gamePage.mazeController.mazeView.helpBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
