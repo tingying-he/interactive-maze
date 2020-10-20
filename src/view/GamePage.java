@@ -42,6 +42,10 @@ public class GamePage extends BorderPane {
         this.characterColor = characterColor;
         this.statusPane.getChildren().add(remainTimeLabel);
         init(filename,characterColor);
+        BackgroundImage myBI= new BackgroundImage(new Image("img/gamepage.png",800,600,false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        this.setBackground(new Background(myBI));
 
     }
 
@@ -50,7 +54,7 @@ public class GamePage extends BorderPane {
         toolbarPane = new HBox();
         toolbarPane.setPrefSize(800,100);
 //        toolbarPane.setStyle("-fx-background-color:#4D5156");
-        toolbarPane.setStyle("-fx-background-color:#292b2a");
+//        toolbarPane.setStyle("-fx-background-color:#292b2a");
 
         initToolbar(toolbarPane);
 
@@ -65,8 +69,8 @@ public class GamePage extends BorderPane {
 
         StackPane axe0Pane = new StackPane();
         Rectangle rec0 = new Rectangle(56,56);
-        rec0.setFill(Color.web("#4D5156"));
-        rec0.setStroke(Color.BLACK);
+        rec0.setFill(Color.TRANSPARENT);
+//        rec0.setStroke(Color.BLACK);
         Image axe0 = new Image("img/axe0.png", 50, 50, false, false);
         axe0View = new ImageView(axe0);
         axe0View.setFitWidth(40);
@@ -75,8 +79,8 @@ public class GamePage extends BorderPane {
 
         StackPane axe1Pane = new StackPane();
         Rectangle rec1 = new Rectangle(56,56);
-        rec1.setFill(Color.web("#4D5156"));
-        rec1.setStroke(Color.BLACK);
+        rec1.setFill(Color.TRANSPARENT);
+//        rec1.setStroke(Color.BLACK);
         Image axe1 = new Image("img/axe1.png", 50, 50, false, false);
         axe1View = new ImageView(axe1);
         axe1View.setFitWidth(40);
@@ -85,8 +89,8 @@ public class GamePage extends BorderPane {
 
         StackPane axe2Pane = new StackPane();
         Rectangle rec2 = new Rectangle(56,56);
-        rec2.setFill(Color.web("#4D5156"));
-        rec2.setStroke(Color.BLACK);
+        rec2.setFill(Color.TRANSPARENT);
+//        rec2.setStroke(Color.BLACK);
         Image axe2 = new Image("img/axe2.png", 40, 40, false, false);
         axe2View = new ImageView(axe2);
         axe2View.setFitWidth(40);
@@ -94,13 +98,13 @@ public class GamePage extends BorderPane {
         axe2Pane.getChildren().addAll(rec2, axe2View);
 
         Rectangle rec4 = new Rectangle(56,56);
-        rec4.setFill(Color.web("#292b2a"));
+        rec4.setFill(Color.TRANSPARENT);
 //        rec4.setStroke(Color.BLACK);
 
         StackPane penPane = new StackPane();
         Rectangle rec3 = new Rectangle(56,56);
-        rec3.setFill(Color.web("#4D5156"));
-        rec3.setStroke(Color.BLACK);
+        rec3.setFill(Color.TRANSPARENT);
+//        rec3.setStroke(Color.BLACK);
         Image pen = new Image("img/star.png", 40, 40, false, false);
         penView = new ImageView(pen);
         penView.setFitWidth(40);

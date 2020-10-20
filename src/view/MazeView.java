@@ -53,12 +53,12 @@ public class MazeView extends BorderPane {
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
         this.setFocusTraversable(true);
-        this.setStyle("-fx-background-color:#4D5156");
+//        this.setStyle("-fx-background-color:#4D5156");
 //        this.setStyle("-fx-background-color:#292b2a");
 
         this.setCenter(mazePane);
         this.setRight(statusPane);
-        statusPane.setPadding(new Insets(20,20,20,20));
+        statusPane.setPadding(new Insets(40,60,20,20));
 
         //status pane
         statusPane.getChildren().addAll(keyPane,timePane,btnPane);
