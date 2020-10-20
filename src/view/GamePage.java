@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 
@@ -31,6 +32,7 @@ public class GamePage extends BorderPane {
     public static ImageView axe1View;
     public static ImageView axe2View;
     public static ImageView penView;
+    public static Label starNum;
 
     public VBox statusPane = new VBox();
     public Label remainTimeLabel = new Label();
@@ -47,8 +49,8 @@ public class GamePage extends BorderPane {
         this.setPrefSize(800,600);
         toolbarPane = new HBox();
         toolbarPane.setPrefSize(800,100);
-        toolbarPane.setStyle("-fx-background-color:#4D5156");
-//        toolbarPane.setStyle("-fx-background-color:#292b2a");
+//        toolbarPane.setStyle("-fx-background-color:#4D5156");
+        toolbarPane.setStyle("-fx-background-color:#292b2a");
 
         initToolbar(toolbarPane);
 
@@ -62,7 +64,7 @@ public class GamePage extends BorderPane {
     private void initToolbar(Pane toolbarPane) {
 
         StackPane axe0Pane = new StackPane();
-        Rectangle rec0 = new Rectangle(50,50);
+        Rectangle rec0 = new Rectangle(56,56);
         rec0.setFill(Color.web("#4D5156"));
         rec0.setStroke(Color.BLACK);
         Image axe0 = new Image("img/axe0.png", 50, 50, false, false);
@@ -72,7 +74,7 @@ public class GamePage extends BorderPane {
         axe0Pane.getChildren().addAll(rec0,axe0View);
 
         StackPane axe1Pane = new StackPane();
-        Rectangle rec1 = new Rectangle(50,50);
+        Rectangle rec1 = new Rectangle(56,56);
         rec1.setFill(Color.web("#4D5156"));
         rec1.setStroke(Color.BLACK);
         Image axe1 = new Image("img/axe1.png", 50, 50, false, false);
@@ -82,7 +84,7 @@ public class GamePage extends BorderPane {
         axe1Pane.getChildren().addAll(rec1, axe1View);
 
         StackPane axe2Pane = new StackPane();
-        Rectangle rec2 = new Rectangle(50,50);
+        Rectangle rec2 = new Rectangle(56,56);
         rec2.setFill(Color.web("#4D5156"));
         rec2.setStroke(Color.BLACK);
         Image axe2 = new Image("img/axe2.png", 40, 40, false, false);
@@ -91,17 +93,29 @@ public class GamePage extends BorderPane {
         axe2View.setFitHeight(40);
         axe2Pane.getChildren().addAll(rec2, axe2View);
 
+        Rectangle rec4 = new Rectangle(56,56);
+        rec4.setFill(Color.web("#292b2a"));
+//        rec4.setStroke(Color.BLACK);
+
         StackPane penPane = new StackPane();
-        Rectangle rec3 = new Rectangle(40,40);
-        rec3.setFill(Color.WHITE);
+        Rectangle rec3 = new Rectangle(56,56);
+        rec3.setFill(Color.web("#4D5156"));
+        rec3.setStroke(Color.BLACK);
         Image pen = new Image("img/star.png", 40, 40, false, false);
         penView = new ImageView(pen);
         penView.setFitWidth(40);
         penView.setFitHeight(40);
-        penPane.getChildren().addAll(rec3, penView);
+
+        penView.setOpacity(0.3);
+        starNum = new Label("0 ");
+        starNum.setFont(new Font("Arial", 22));
+        starNum.setTextFill(Color.WHITE);
+//        pane.getChildren().add(starNum);
+        penPane.getChildren().addAll(rec3, penView, starNum);
+        StackPane.setAlignment(starNum, Pos.TOP_RIGHT);
 
         toolbarPane.setPadding(new Insets(20,20,20,40));
-        toolbarPane.getChildren().addAll(axe0Pane, axe1Pane, axe2Pane);
+        toolbarPane.getChildren().addAll(axe0Pane, axe1Pane, axe2Pane, rec4, penPane);
     }
 
 

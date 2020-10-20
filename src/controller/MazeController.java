@@ -91,7 +91,9 @@ public class MazeController {
         setPen();
 //        setAutoNavigate();
 
-        mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+//        mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+        GamePage.starNum.setText(Integer.toString(mazeModel.starNum) + " ");
+
         mazeView.keyNumberLabel.setText("No");
     }
 
@@ -288,7 +290,11 @@ public class MazeController {
                                             @Override
                                             public void handle(MouseEvent mouseEvent) {
                                                 mazeModel.starNum++;
-                                                mazeView.starNumberLabel.setText(mazeModel.starNum + "");
+//                                                mazeView.starNumberLabel.setText(mazeModel.starNum + "");
+                                                if (mazeModel.starNum > 0) {
+                                                    GamePage.penView.setOpacity(1);
+                                                }
+                                                GamePage.starNum.setText(mazeModel.starNum + " ");
                                                 starImgView.setVisible(false);
                                             }
                                         });
@@ -696,8 +702,8 @@ public class MazeController {
      * setPen: change the cursor view and allow drawing an auto path
      */
     public void setPen() {
-//        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        mazeView.starIconImgView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        GamePage.penView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//        mazeView.starIconImgView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
 //                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
@@ -708,7 +714,11 @@ public class MazeController {
 
                     canDraw = true;
                     mazeModel.starNum--;
-                    mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+//                    mazeView.starNumberLabel.setText(Integer.toString(mazeModel.starNum));
+                    GamePage.starNum.setText(Integer.toString(mazeModel.starNum));
+                    if (mazeModel.starNum == 0) {
+                        GamePage.penView.setOpacity(0.3);
+                    }
                     setTimerStart();
                 }
             }
