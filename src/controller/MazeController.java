@@ -485,7 +485,7 @@ public class MazeController {
                     });
                     if(mazeModel.remainTime < 30){
 
-                        mazeView.remainTimeLabel.setTextFill(Color.YELLOW);
+                        mazeView.remainTimeLabel.setTextFill(Color.RED);
 
                     }else{
                         mazeView.remainTimeLabel.setTextFill(Color.WHITE);
