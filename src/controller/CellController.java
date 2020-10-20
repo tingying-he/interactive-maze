@@ -2,6 +2,8 @@ package controller;
 
 import application.Main;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Cell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,7 +58,7 @@ public class CellController {
                     double changeInX = mouseEvent.getSceneX() - orgX;
                     double changeInY = mouseEvent.getSceneY() - orgY;
                     Image whiteImg;
-                    if (mouseEvent.isControlDown()
+                    if (mouseEvent.isShiftDown()
                             && Main.pressedKeys.contains(KeyCode.D)
                             && MazeController.canDraw) {
                         System.out.println("zhu zhu huahua");

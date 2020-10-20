@@ -1,12 +1,17 @@
 package view;
 
+import application.Main;
 import controller.MazeController;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -37,6 +42,7 @@ public class MazeView extends BorderPane {
     public ImageView starIconImgView = new ImageView(starIconImg);
     public Label starIntroLabel = new Label("Magic Sticks");
 
+
     //key pane
     private AnchorPane keyPane = new AnchorPane();
     public Label keyNumberLabel = new Label("No");
@@ -51,13 +57,11 @@ public class MazeView extends BorderPane {
     public VBox btnPane = new VBox();
 
 
-
-
-
     public MazeView(MazeController mazeController) {
         this.mazeController = mazeController;
         this.setFocusTraversable(true);
-        this.setStyle("-fx-background-color:#4D5156");
+//        this.setStyle("-fx-background-color:#4D5156");
+        this.setStyle("-fx-background-color:#292b2a");
 
         this.setCenter(mazePane);
         this.setRight(statusPane);
@@ -140,6 +144,7 @@ public class MazeView extends BorderPane {
 
 
     }
+
 }
 
 
