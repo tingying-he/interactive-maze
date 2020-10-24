@@ -3,6 +3,8 @@
 <img src="https://github.com/tingying-he/interactive-maze/blob/main/src/img/screenshot.png" alt="screenshot" width="800"/>
 </p>
 
+Video: https://vimeo.com/471794121
+
 #### General Info
 Enchanted Woods is an interactive maze game.<br/>
 It is the course project of Programming of Interactive System in University Paris Saclay.
