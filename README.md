@@ -1,5 +1,5 @@
 # Enchanted Woods
-<img scr="https://github.com/tingying-he/interactive-maze/blob/main/src/img/screenshot.png" alt="screenshot" width="800"/>
+<img url="https://github.com/tingying-he/interactive-maze/blob/main/src/img/screenshot.png" alt="screenshot" width="800"/>
 
 #### General Info
 Enchanted Woods is an interactive maze game.<br/>
