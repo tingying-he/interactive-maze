@@ -442,6 +442,8 @@ public class MazeController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 restart();
+                setBadGuyMoveTimer();
+                setKeyMoveTimer();
             }
         });
     }
