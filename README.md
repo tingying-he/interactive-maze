@@ -1,5 +1,6 @@
 # Enchanted Woods
-![screenshot](https://github.com/tingying-he/interactive-maze/blob/main/src/img/screenshot.png)
+<img scr="https://github.com/tingying-he/interactive-maze/blob/main/src/img/screenshot.png" alt="screenshot" width="800"/>
+
 #### General Info
 Enchanted Woods is an interactive maze game.<br/>
 It is the course project of Programming of Interactive System in University Paris Saclay.
